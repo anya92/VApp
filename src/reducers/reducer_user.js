@@ -1,4 +1,4 @@
-import { GET_USER } from '../constants';
+import { GET_USER, LOGOUT_USER } from '../constants';
 
 // let user = {
 //   email: null,
@@ -17,6 +17,9 @@ export default (state = user, action) => {
         displayName,
         photoURL
       };
+      return user;
+    case LOGOUT_USER:
+      user = null;
       return user;
     default:
       return state;  

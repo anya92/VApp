@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getUser } from '../actions';
+import { getUser, logOutUser } from '../actions';
 import { firebaseApp } from '../firebase';
 
 // components
@@ -58,6 +58,7 @@ class App extends Component {
           loading: false
         });
       } else {
+        this.props.logOutUser();
         this.setState({
           auth: false,
           loading: false
@@ -97,5 +98,5 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { getUser })(App);
+export default connect(mapStateToProps, { getUser, logOutUser })(App);
 
