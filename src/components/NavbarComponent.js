@@ -49,7 +49,7 @@ const NavbarComponent = (props) => {
                       <MenuItem divider />
                       <MenuItem eventKey={1.3} onClick={() => signOut()}>WYLOGUJ SIĘ</MenuItem>
                     </NavDropdown>
-                    <LinkContainer to="/add">
+                    <LinkContainer to="/add"  className="special">
                       <NavItem eventKey={2}>DODAJ</NavItem>
                     </LinkContainer>
                   </Nav>

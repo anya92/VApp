@@ -16,6 +16,8 @@ import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
 import NotFound from './NotFound';
+
+import EditProfile from './protected/EditProfile';
 import Profile from './protected/Profile';
 import Add from './protected/Add';
 
@@ -90,7 +92,8 @@ class App extends Component {
                 <Route exact path='/' component={Home} />
                 <PublicRoute auth={this.state.auth} path='/login' component={Login} user={this.props.user} />
                 <PublicRoute auth={this.state.auth} path='/signup' component={SignUp} />
-                <PrivateRoute auth={this.state.auth} path='/profile' component={Profile} user={this.props.user} />
+                <PrivateRoute auth={this.state.auth} exact path='/profile' component={Profile} user={this.props.user} />
+                <PrivateRoute auth={this.state.auth} path='/profile/edit' component={EditProfile} user={this.props.user} />
                 <PrivateRoute auth={this.state.auth} path='/add' component={Add} user={this.props.user} />
                 <Route component={NotFound} />
               </Switch>

@@ -1,0 +1,50 @@
+.header {
+  width: 100%;
+  height: 250px;
+  margin-top: 20px;
+  position: relative;
+  background-color: white;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+  .user-info {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    .user-photo {
+      // co jak jest zdjęcie?
+      width: 150px;
+      opacity: 0.3;
+      display: inline-block;
+    }
+    .user-name {
+      display: inline-block;
+      margin-left: 40px;
+    }
+  }
+  .tabs {
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    bottom: 0;
+    // background-color: mistyrose;
+    .tab {
+      width: 25%;
+      line-height: 50px;
+      display: inline-block;
+      cursor: pointer;
+      &:hover {
+        border-top: 3px solid mistyrose;
+      }
+    }
+    .active {
+      border-top: 3px solid mistyrose;
+    }
+  }
+  .edit-icon img {
+    width: 24px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+}
+
+
