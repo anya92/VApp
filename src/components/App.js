@@ -58,11 +58,11 @@ class App extends Component {
           loading: false
         });
       } else {
-        this.props.logOutUser();
         this.setState({
           auth: false,
           loading: false
         });
+        this.props.logOutUser();
       }
     });
   }
