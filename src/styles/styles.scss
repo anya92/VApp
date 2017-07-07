@@ -1,5 +1,10 @@
+@import 'partials/navbar';
+@import 'partials/content';
+
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
 body {
-  h1 {
-    color: #BADA55;
-  }
+  background-color: #f6f1fd;
+  font-family: 'Nunito';
+  font-size: 18px;
 }
