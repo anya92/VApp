@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { firebaseApp } from '../../firebase';
-const userIcon = require('../../icons/user.svg');
+const userIcon = require('../../icons/user.png');
 
 class EditProfile extends Component {
   constructor(props) {
@@ -83,71 +83,82 @@ class EditProfile extends Component {
 
   render() {
     return (
-      <div>
+      <div className="profile__edit">
         <div className="header__edit">
-          <h1>Edytuj profil</h1>
+          <h1 className="text-center">Ustawienia</h1>
           <p>{this.state.error.message}</p>
         </div>
-        <div className="user-photo__edit col-sm-4">
-          <img src={this.state.photoURL || userIcon} alt="user" className="img-responsive" />
+        <div className="col-sm-4">
+          <div className="user-photo__edit">
+            <img src={this.state.photoURL || userIcon} alt="user" className="img-responsive" />
+          </div>
         </div>
         <div className="user-info__edit col-sm-8">
           <form>
-            <div className="form-group">
-              <label htmlFor="displayName">Ustaw lub zmień nazwę użytkownika</label>
-              <input type="text" className="form-control" placeholder="Nazwa użytkownika" name="displayName" value={this.state.displayName || ''} onChange={e => this.setState({ displayName: e.target.value })}/>
-            </div>
-            <div className="form-group">
-              <label htmlFor="photo">Ustaw lub zmień zdjęcie profilowe</label>
-              <input type="text" className="form-control" placeholder="Link do zdjęcia" name="photo" value={this.state.photoURL || ''} onChange={e => this.setState({ photoURL: e.target.value })} />
-            </div>
-            <button 
-              className="btn" 
-              type="submit"
-              onClick={e => this.updateUser(e)}
-            >
-              Zapisz
-            </button>
+            <fieldset>
+              <legend>Dane użytkownika</legend>
+              <div className="form-group">
+                <label htmlFor="displayName">Ustaw lub zmień nazwę użytkownika</label>
+                <input type="text" className="form-control" placeholder="Nazwa użytkownika" name="displayName" value={this.state.displayName || ''} onChange={e => this.setState({ displayName: e.target.value })}/>
+              </div>
+              <div className="form-group">
+                <label htmlFor="photo">Ustaw lub zmień zdjęcie profilowe</label>
+                <input type="text" className="form-control" placeholder="Link do zdjęcia" name="photo" value={this.state.photoURL || ''} onChange={e => this.setState({ photoURL: e.target.value })} />
+              </div>
+              <button 
+                className="btn btn-lg" 
+                type="submit"
+                onClick={e => this.updateUser(e)}
+              >
+                Zapisz
+              </button>
+            </fieldset>  
           </form>
         </div>
         <div className="email__edit col-sm-8">  
           <form>
-            <p>{this.state.successEmail}</p>
-            <div className="form-group">
-              <label htmlFor="email">Zmień email</label>
-              <input type="email" className="form-control" placeholder="Email" name="email" value={this.state.email} onChange={e => this.setState({ email: e.target.value })} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="providedPassword">Wpisz hasło</label>
-              <input type="password" className="form-control" name="providedPassword" placeholder="Hasło" onChange={e => this.setState({ providedPassword: e.target.value })} />
-            </div>
-            <button 
-              className="btn" 
-              type="submit"
-              onClick={e => this.changeEmail(e)}
-            >
-              Zapisz
-            </button>
+            <fieldset>
+              <legend>Email</legend>
+              <p className="success-message">{this.state.successEmail}</p>
+              <div className="form-group">
+                <label htmlFor="email">Zmień email</label>
+                <input type="email" className="form-control" placeholder="Email" name="email" value={this.state.email} onChange={e => this.setState({ email: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="providedPassword">Wpisz hasło</label>
+                <input type="password" className="form-control" name="providedPassword" placeholder="Hasło" onChange={e => this.setState({ providedPassword: e.target.value })} />
+              </div>
+              <button 
+                className="btn btn-lg" 
+                type="submit"
+                onClick={e => this.changeEmail(e)}
+              >
+                Zapisz
+              </button>
+            </fieldset>  
           </form>
         </div>
-        <div className="password__edit col-sm-8 pull-right" >
+        <div className="password__edit col-sm-8" >
           <form>
-            <p>{this.state.successPassword}</p>
-            <div className="form-group">
-              <label htmlFor="new-password">Wpisz nowe hasło</label>
-              <input type="password" className="form-control" name="new-password" placeholder="Nowe hasło" onChange={e => this.setState({ newPassword: e.target.value })} />
-            </div>
-            <div className="form-group">
-              <label htmlFor="old-password">Wpisz obecne hasło</label>
-              <input type="password" className="form-control" name="old-password" placeholder="Obecne hasło" onChange={e => this.setState({ providedPassword: e.target.value })} />
-            </div>
-            <button 
-              className="btn" 
-              type="submit"
-              onClick={e => this.changePassword(e)}
-            >
-              Zapisz
-            </button>
+            <fieldset>
+              <legend>Hasło</legend>
+              <p className="success-message">{this.state.successPassword}</p>
+              <div className="form-group">
+                <label htmlFor="new-password">Wpisz nowe hasło</label>
+                <input type="password" className="form-control" name="new-password" placeholder="Nowe hasło" onChange={e => this.setState({ newPassword: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="old-password">Wpisz obecne hasło</label>
+                <input type="password" className="form-control" name="old-password" placeholder="Obecne hasło" onChange={e => this.setState({ providedPassword: e.target.value })} />
+              </div>
+              <button 
+                className="btn btn-lg" 
+                type="submit"
+                onClick={e => this.changePassword(e)}
+              >
+                Zapisz
+              </button>
+            </fieldset>  
           </form>
         </div>
       </div>

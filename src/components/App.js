@@ -87,7 +87,7 @@ class App extends Component {
         <div>
           <NavbarComponent user={this.props.user} />
           <div className="container">
-            <div className="row content">
+            <div className="col-sm-10 col-sm-offset-1 content">
               <Switch>
                 <Route exact path='/' component={Home} />
                 <PublicRoute auth={this.state.auth} path='/login' component={Login} user={this.props.user} />

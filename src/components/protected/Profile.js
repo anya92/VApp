@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 const editIcon = require('../../icons/edit.svg');
-const userIcon = require('../../icons/user.svg');
+const userIcon = require('../../icons/user.png');
 
 class Profile extends Component {
   constructor(props) {
