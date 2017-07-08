@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { firebaseApp } from '../../firebase';
 const editIcon = require('../../icons/edit.svg');
 const userIcon = require('../../icons/user.svg');
 

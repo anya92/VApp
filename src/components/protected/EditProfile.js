@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
 import { firebaseApp } from '../../firebase';
-// import { getUser } from '../../actions';
 const userIcon = require('../../icons/user.svg');
 
 class EditProfile extends Component {
@@ -11,9 +11,13 @@ class EditProfile extends Component {
       photoURL: '',
       displayName: '',
       email: '',
+      providedPassword: '',
+      newPassword: '',
       error: {
         message: ''
-      }
+      },
+      successEmail: '',
+      successPassword: ''
     };
   }
 
@@ -28,7 +32,7 @@ class EditProfile extends Component {
   }
 
 
-  updateUser = (e) => {
+  updateUser = e => {
     e.preventDefault();
     const { displayName, photoURL } = this.state;
     const user = firebaseApp.auth().currentUser;
@@ -40,16 +44,44 @@ class EditProfile extends Component {
       this.props.getUser(user.email, user.displayName, user.photoURL);
       // console.log(user);
       this.props.history.push('/profile');
-    }, (error) => {
-      this.setState({error})
+    }, error => {
       // An error happened.
+      this.setState({ error });
     });
-   
+  }
+
+  changeEmail = e => {
+    e.preventDefault();
+    const { email, providedPassword } = this.state;
+    const user = firebaseApp.auth().currentUser;
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, providedPassword);
+
+    user.reauthenticateWithCredential(credential).then(() => {
+      // User re-authenticated.
+      user.updateEmail(email).then(() => {
+        // Update successful.
+        this.props.getUser(user.email, user.displayName, user.photoURL);
+        this.setState({ successEmail: 'Email został zmieniony pomyślnie.' })
+        // this.props.history.push('/profile');
+      }).catch(error => this.setState({ error }));
+    }).catch(error => this.setState({ error }));
+  }
+
+  changePassword = e => {
+    e.preventDefault();
+    const { providedPassword, newPassword } = this.state;
+    const user = firebaseApp.auth().currentUser;
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, providedPassword);
+    user.reauthenticateWithCredential(credential).then(() => {
+      // User re-authenticated.
+      user.updatePassword(newPassword).then(() => {
+        // Update successful.
+        this.setState({ successPassword: 'Hasło zostało zmienione.' });
+      }).catch(error => this.setState({ error }));
+    }).catch(error => this.setState({ error }));
   }
 
   render() {
-    const { email, photoURL } = this.props.user;
-    const displayName = 'Ania Bania';
     return (
       <div>
         <div className="header__edit">
@@ -57,9 +89,9 @@ class EditProfile extends Component {
           <p>{this.state.error.message}</p>
         </div>
         <div className="user-photo__edit col-sm-4">
-          <img src={photoURL || userIcon} alt="user-photo" className="img-responsive" />
+          <img src={this.state.photoURL || userIcon} alt="user" className="img-responsive" />
         </div>
-        <div className="edit-form col-sm-8">
+        <div className="user-info__edit col-sm-8">
           <form>
             <div className="form-group">
               <label htmlFor="displayName">Ustaw lub zmień nazwę użytkownika</label>
@@ -76,7 +108,46 @@ class EditProfile extends Component {
             >
               Zapisz
             </button>
-            
+          </form>
+        </div>
+        <div className="email__edit col-sm-8">  
+          <form>
+            <p>{this.state.successEmail}</p>
+            <div className="form-group">
+              <label htmlFor="email">Zmień email</label>
+              <input type="email" className="form-control" placeholder="Email" name="email" value={this.state.email} onChange={e => this.setState({ email: e.target.value })} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="providedPassword">Wpisz hasło</label>
+              <input type="password" className="form-control" name="providedPassword" placeholder="Hasło" onChange={e => this.setState({ providedPassword: e.target.value })} />
+            </div>
+            <button 
+              className="btn" 
+              type="submit"
+              onClick={e => this.changeEmail(e)}
+            >
+              Zapisz
+            </button>
+          </form>
+        </div>
+        <div className="password__edit col-sm-8 pull-right" >
+          <form>
+            <p>{this.state.successPassword}</p>
+            <div className="form-group">
+              <label htmlFor="new-password">Wpisz nowe hasło</label>
+              <input type="password" className="form-control" name="new-password" placeholder="Nowe hasło" onChange={e => this.setState({ newPassword: e.target.value })} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="old-password">Wpisz obecne hasło</label>
+              <input type="password" className="form-control" name="old-password" placeholder="Obecne hasło" onChange={e => this.setState({ providedPassword: e.target.value })} />
+            </div>
+            <button 
+              className="btn" 
+              type="submit"
+              onClick={e => this.changePassword(e)}
+            >
+              Zapisz
+            </button>
           </form>
         </div>
       </div>
