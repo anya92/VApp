@@ -1,11 +1,20 @@
 .navbar {
   background-color: white;
   // height: 60px;
-  font-weight: bolder;
+  // font-weight: bolder;
   font-size: 17px;
+  border-bottom: none;
+  .navbar-brand {
+    color: $main-color;
+    font-size: 25px;
+    font-weight: bold;
+    padding: auto;
+    &:focus, &:hover {
+      color: $main-color;
+    }
+  }
   a {
-    // height: 60px;
-    // line-height: 30px;
+    // font-variant: small-caps;
   }
   .navbar-nav>li>a.special {
     background-color: mistyrose;

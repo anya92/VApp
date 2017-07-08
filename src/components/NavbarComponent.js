@@ -14,7 +14,7 @@ const NavbarComponent = (props) => {
       <Navbar collapseOnSelect fixedTop>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#">Voting App</a>
+            <a href="#">VApp</a>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>

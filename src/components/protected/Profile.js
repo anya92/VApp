@@ -25,7 +25,7 @@ class Profile extends Component {
           </div>
           <div className="user-info">
             <div className="user-photo">
-              <img src={photoURL || userIcon} alt="user-icon"/>
+              <img src={photoURL || userIcon} alt="user-icon" className="img-responsive" />
             </div>
             <div className="user-name">
               <h2>{displayName || email}</h2>
@@ -47,7 +47,6 @@ class Profile extends Component {
             </div>
           </div>
         </div>
-
       </div>
     );
   }
