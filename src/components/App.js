@@ -93,7 +93,7 @@ class App extends Component {
                 <PublicRoute auth={this.state.auth} path='/login' component={Login} user={this.props.user} />
                 <PublicRoute auth={this.state.auth} path='/signup' component={SignUp} />
                 <PrivateRoute auth={this.state.auth} exact path='/profile' component={Profile} user={this.props.user} />
-                <PrivateRoute auth={this.state.auth} path='/profile/edit' component={EditProfile} user={this.props.user} />
+                <PrivateRoute auth={this.state.auth} path='/profile/edit' component={EditProfile} user={this.props.user} getUser={this.props.getUser} />
                 <PrivateRoute auth={this.state.auth} path='/add' component={Add} user={this.props.user} />
                 <Route component={NotFound} />
               </Switch>

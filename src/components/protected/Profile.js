@@ -13,8 +13,7 @@ class Profile extends Component {
     }
   }
   render() {
-    const { email, photoURL } = this.props.user;
-    const displayName = 'Ania Bania';
+    const { email, displayName, photoURL } = this.props.user;
     return (
       <div className="text-center">
         <div className="header">
