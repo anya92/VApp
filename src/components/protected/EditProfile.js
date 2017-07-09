@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { firebaseApp } from '../../firebase';
 const userIcon = require('../../icons/user.png');
+const errorIcon = require('../../icons/error.png');
 
 class EditProfile extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class EditProfile extends Component {
       email,
       photoURL
     });
-  }
+   }
 
 
   updateUser = e => {
@@ -43,7 +44,7 @@ class EditProfile extends Component {
       // Update successful.
       this.props.getUser(user.email, user.displayName, user.photoURL);
       // console.log(user);
-      this.props.history.push('/profile');
+      this.props.history.push('/profil');
     }, error => {
       // An error happened.
       this.setState({ error });
@@ -62,7 +63,7 @@ class EditProfile extends Component {
         // Update successful.
         this.props.getUser(user.email, user.displayName, user.photoURL);
         this.setState({ successEmail: 'Email został zmieniony pomyślnie.' })
-        // this.props.history.push('/profile');
+        // this.props.history.push('/profil');
       }).catch(error => this.setState({ error }));
     }).catch(error => this.setState({ error }));
   }
@@ -81,19 +82,24 @@ class EditProfile extends Component {
     }).catch(error => this.setState({ error }));
   }
 
+  imageError = () => {
+    this.image.src = errorIcon;
+  }
+
   render() {
+    
     return (
       <div className="profile__edit">
         <div className="header__edit">
           <h1 className="text-center">Ustawienia</h1>
           <p>{this.state.error.message}</p>
         </div>
-        <div className="col-sm-4">
+        <div className="col-md-4">
           <div className="user-photo__edit">
-            <img src={this.state.photoURL || userIcon} alt="user" className="img-responsive" />
+            <img src={this.state.photoURL || userIcon} alt="user" className="img-responsive" ref={ref => (this.image = ref)} onError={() => this.imageError()} />
           </div>
         </div>
-        <div className="user-info__edit col-sm-8">
+        <div className="user-info__edit col-md-8">
           <form>
             <fieldset>
               <legend>Dane użytkownika</legend>
@@ -115,7 +121,7 @@ class EditProfile extends Component {
             </fieldset>  
           </form>
         </div>
-        <div className="email__edit col-sm-8">  
+        <div className="email__edit col-md-8 col-md-push-4">  
           <form>
             <fieldset>
               <legend>Email</legend>
@@ -138,7 +144,7 @@ class EditProfile extends Component {
             </fieldset>  
           </form>
         </div>
-        <div className="password__edit col-sm-8" >
+        <div className="password__edit col-md-8 col-md-push-4" >
           <form>
             <fieldset>
               <legend>Hasło</legend>

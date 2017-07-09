@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import * as firebase from 'firebase';
 import { firebaseApp } from '../firebase';
+
 
 class Login extends Component {
   constructor(props) {
@@ -11,7 +13,9 @@ class Login extends Component {
       password: '',
       error: {
         message: ''
-      }
+      },
+      renderForgot: false,
+      forgotEmail: ''
     };
   }
 
@@ -24,32 +28,105 @@ class Login extends Component {
       }); 
   }
 
+  renderForgotPassword = () => {
+    return (
+      <div className="forgot-password">
+        <p onClick={this.forgotPassword}>&#x2715;</p>
+        <div className="form-group">
+          <label htmlFor="forgot-email">Email</label>
+          <input 
+            type="email" 
+            name="forgot-email" 
+            className="form-control" 
+            onChange={e => this.setState({ forgotEmail: e.target.value })}
+          />
+
+        </div>
+        <button 
+          type="submit" 
+          className="btn btn-lg"
+          onClick={this.sendReset}
+        >
+          Wyślij
+        </button>
+      </div>
+    );
+  }
+
+  sendReset = () => {
+    const { forgotEmail } = this.state;
+    firebaseApp.auth().sendPasswordResetEmail(forgotEmail).then(() => {
+      // Email sent.
+      console.log('send email');
+    }).catch(error => console.log(error));
+  }
+
+  forgotPassword = () => {
+    console.log('forgotPassword');
+    this.setState(prevState => {
+      return {
+        renderForgot: !prevState.renderForgot
+      };
+    })
+  }
+
   render() {
     return (
-      <div>
-        <h1>Login</h1>
-        <div>
-          {this.state.error.message}
+      <div className="login">
+        <div className="header__login text-center">
+          <h4 className="active login-title">Zaloguj się</h4>
+          <Link to="/signup">
+            <h4 className="signup-title">Zarejestruj się</h4>
+          </Link>
         </div>
-        <div>{this.props.user ? this.props.user.email : 'no user'}</div>
+        <div>
+          <p className="error">{this.state.error.message}</p>
+        </div>
         <form>
-          <input 
-            type="email"
-            placeholder="email"
-            onChange={e => this.setState({ email: e.target.value })}
-          />
-          <input 
-            type="password"
-            placeholder="password"
-            onChange={e => this.setState({ password: e.target.value })}
-          />
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input 
+              type="email"
+              name="email"
+              placeholder="email"
+              className="form-control"
+              onChange={e => this.setState({ email: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Hasło</label>
+            <input 
+              type="password"
+              name="password"
+              className="form-control"
+              placeholder="password"
+              onChange={e => this.setState({ password: e.target.value })}
+             />
+          </div>   
           <button
+            className="btn btn-lg"
             onClick={e => this.signIn(e)}
           >
-            Log In
+            Zaloguj się
           </button>
         </form>
-        <Link to="/signup">Sign up instead</Link>
+        <hr/>
+        {
+          !this.state.renderForgot 
+          ? <button 
+              className="btn btn-lg forgot-password"
+              onClick={this.forgotPassword}
+            >
+              Zapomniałeś hasła?
+            </button>
+          : <div></div>  
+        }
+        
+        { 
+          this.state.renderForgot 
+          ? this.renderForgotPassword()
+          : <div></div>
+        }
       </div>
     );
   }

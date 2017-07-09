@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 const editIcon = require('../../icons/edit.svg');
 const userIcon = require('../../icons/user.png');
+const errorIcon = require('../../icons/error.png');
 
 class Profile extends Component {
   constructor(props) {
@@ -11,19 +12,24 @@ class Profile extends Component {
       display: 'tab-1'
     }
   }
+
+  imageError = () => {
+    this.image.src = errorIcon;
+  }
+
   render() {
     const { email, displayName, photoURL } = this.props.user;
     return (
       <div className="text-center">
         <div className="header">
           <div className="edit-icon">
-            <Link to="/profile/edit">
+            <Link to="/ustawienia">
               <img src={editIcon} alt="edit-icon"/>
             </Link>
           </div>
           <div className="user-info">
             <div className="user-photo">
-              <img src={photoURL || userIcon} alt="user-icon" className="img-responsive" />
+              <img src={photoURL || userIcon} alt="user-icon" className="img-responsive" ref={ref => (this.image = ref)} onError={() => this.imageError()} />
             </div>
             <div className="user-name">
               <h2>{displayName || email}</h2>

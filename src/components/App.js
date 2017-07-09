@@ -42,7 +42,7 @@ function PublicRoute({ component: Component, auth, ...rest }) {
       {...rest}
       render={(props) => auth === false
         ? <Component {...props} {...rest} />
-        : <Redirect to="/profile" />}
+        : <Redirect to="/profil" />}
     />
   );
 }
@@ -87,13 +87,13 @@ class App extends Component {
         <div>
           <NavbarComponent user={this.props.user} />
           <div className="container">
-            <div className="col-sm-10 col-sm-offset-1 content">
+            <div className="col-md-10 col-md-offset-1 content">
               <Switch>
                 <Route exact path='/' component={Home} />
                 <PublicRoute auth={this.state.auth} path='/login' component={Login} user={this.props.user} />
                 <PublicRoute auth={this.state.auth} path='/signup' component={SignUp} />
-                <PrivateRoute auth={this.state.auth} exact path='/profile' component={Profile} user={this.props.user} />
-                <PrivateRoute auth={this.state.auth} path='/profile/edit' component={EditProfile} user={this.props.user} getUser={this.props.getUser} />
+                <PrivateRoute auth={this.state.auth} exact path='/profil' component={Profile} user={this.props.user} />
+                <PrivateRoute auth={this.state.auth} path='/ustawienia' component={EditProfile} user={this.props.user} getUser={this.props.getUser} />
                 <PrivateRoute auth={this.state.auth} path='/add' component={Add} user={this.props.user} />
                 <Route component={NotFound} />
               </Switch>

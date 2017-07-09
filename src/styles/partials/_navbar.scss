@@ -20,4 +20,10 @@
   .navbar-nav>li>a.special {
     background-color: mistyrose;
   }
+  .dropdown-menu>li.active>a {
+    background-color: transparent !important;
+    color: $main-color !important;
+    font-weight: bold;
+    // border-bottom: 1px solid $main-color;
+  }
 }

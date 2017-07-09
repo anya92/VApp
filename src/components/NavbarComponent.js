@@ -43,16 +43,20 @@ const NavbarComponent = (props) => {
               ? (
                   <Nav pullRight>
                     <NavDropdown eventKey={1} title={user.displayName || user.email} id="basic-nav-dropdown">
-                      <LinkContainer to="/profile">
-                        <MenuItem eventKey={1.1}>MÓJ PROFIL</MenuItem>
+                      <LinkContainer to="/profil">
+                        <MenuItem eventKey={1.1}>Twój profil</MenuItem>
                       </LinkContainer>
-                      <MenuItem eventKey={1.2}>Another action</MenuItem>
-                      <MenuItem eventKey={1.3}>Something else here</MenuItem>
+                      <LinkContainer to='/ustawienia'>
+                        <MenuItem eventKey={1.2}>Ustawienia</MenuItem>
+                      </LinkContainer>
+                      <LinkContainer to='/ulubione'>
+                        <MenuItem eventKey={1.3}>Ulubione</MenuItem>
+                      </LinkContainer>
                       <MenuItem divider />
-                      <MenuItem eventKey={1.3} onClick={() => signOut()}>WYLOGUJ SIĘ</MenuItem>
+                      <MenuItem eventKey={1.4} onClick={() => signOut()}>Wyloguj się</MenuItem>
                     </NavDropdown>
                     <LinkContainer to="/add"  className="special">
-                      <NavItem eventKey={2}>DODAJ</NavItem>
+                      <NavItem eventKey={2}>Dodaj</NavItem>
                     </LinkContainer>
                   </Nav>
                 )
