@@ -9,6 +9,7 @@
   }
   h4 {
     display: inline-block;
+    user-select:none;
     margin: 10px;
     &.active {
       // border-bottom: 2px solid $main-color;

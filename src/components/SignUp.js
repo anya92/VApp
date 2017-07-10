@@ -9,19 +9,32 @@ class SignUp extends Component {
     this.state = {
       email: '',
       password: '',
+      confirmPassword: '',
       error: {
         message: ''
       }
     };
   }
 
+  confirmPassword = (password, confirmPassword) => {
+    return password === confirmPassword;
+  }
+
   signUp(e) {
     e.preventDefault();
-    const { email, password } = this.state;
-    firebaseApp.auth().createUserWithEmailAndPassword(email, password)
-    .catch(error => {
-      this.setState({ error });
-    });
+    const { email, password, confirmPassword } = this.state;
+    if (this.confirmPassword(password, confirmPassword)) {
+      firebaseApp.auth().createUserWithEmailAndPassword(email, password)
+      .catch(error => {
+        this.setState({ error });
+      });
+    } else {
+      this.setState({
+        error: {
+          message: 'Podane hasła się nie zgadzają.'
+        }
+      });
+    }
   }
 
   render() {
@@ -53,6 +66,15 @@ class SignUp extends Component {
               name="password"
               className="form-control"
               onChange={e => this.setState({ password: e.target.value})}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="confirm-password">Powtórz hasło</label>
+            <input
+              type="password"
+              name="confirm-password"
+              className="form-control"
+              onChange={e => this.setState({ confirmPassword: e.target.value})}
             />
           </div>
           <div className="text-center">
