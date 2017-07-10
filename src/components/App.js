@@ -82,7 +82,7 @@ class App extends Component {
 
   render() {
     // const { user } = this.props;
-    return this.state.loading ? <h1>Loading...</h1> : (
+    return this.state.loading ? <div id="loading"></div> : (
       <Router>
         <div>
           <NavbarComponent user={this.props.user} />

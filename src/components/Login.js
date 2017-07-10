@@ -28,46 +28,20 @@ class Login extends Component {
       }); 
   }
 
-  renderForgotPassword = () => {
-    return (
-      <div className="forgot-password">
-        <p onClick={this.forgotPassword}>&#x2715;</p>
-        <div className="form-group">
-          <label htmlFor="forgot-email">Email</label>
-          <input 
-            type="email" 
-            name="forgot-email" 
-            className="form-control" 
-            onChange={e => this.setState({ forgotEmail: e.target.value })}
-          />
-
-        </div>
-        <button 
-          type="submit" 
-          className="btn btn-lg"
-          onClick={this.sendReset}
-        >
-          Wyślij
-        </button>
-      </div>
-    );
+  forgotPassword = () => {
+    this.setState(prevState => {
+      return {
+        renderForgot: !prevState.renderForgot
+      };
+    })
   }
 
   sendReset = () => {
     const { forgotEmail } = this.state;
     firebaseApp.auth().sendPasswordResetEmail(forgotEmail).then(() => {
       // Email sent.
-      console.log('send email');
+      this.setState({ resetMessage: 'Email został wysłany.' })
     }).catch(error => console.log(error));
-  }
-
-  forgotPassword = () => {
-    console.log('forgotPassword');
-    this.setState(prevState => {
-      return {
-        renderForgot: !prevState.renderForgot
-      };
-    })
   }
 
   render() {
@@ -124,7 +98,27 @@ class Login extends Component {
         
         { 
           this.state.renderForgot 
-          ? this.renderForgotPassword()
+          ? (
+              <div className="forgot-password">
+                <p onClick={this.forgotPassword}>&#x2715;</p>
+                <div className="form-group">
+                  <label htmlFor="forgot-email">Wpisz email, </label>
+                  <input 
+                    type="email" 
+                    name="forgot-email" 
+                    className="form-control" 
+                    onChange={e => this.setState({ forgotEmail: e.target.value })}
+                  />
+                </div>
+                <button 
+                  type="submit" 
+                  className="btn btn-lg"
+                  onClick={this.sendReset}
+                >
+                  Wyślij
+                </button>
+              </div>
+            )
           : <div></div>
         }
       </div>
