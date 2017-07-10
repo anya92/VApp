@@ -25,7 +25,7 @@ const NavbarComponent = (props) => {
             <LinkContainer to="/top">
               <NavItem eventKey={1}>Popularne</NavItem>
             </LinkContainer>
-            <NavItem eventKey={2} href="#">Link</NavItem>
+            <NavItem eventKey={2} href="#">O projekcie</NavItem>
             {/*<NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
               <MenuItem eventKey={3.1}>Action</MenuItem>
               <MenuItem eventKey={3.2}>Another action</MenuItem>

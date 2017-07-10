@@ -11,18 +11,14 @@
     display: inline-block;
     margin: 10px;
     &.active {
-      border-bottom: 2px solid $main-color;
+      // border-bottom: 2px solid $main-color;
+      text-decoration: underline;
+      text-decoration-color: $main-color;
+      text-underline-position: under;
     }
-    &.signup-title {
-      // float: right;
-    }
-  }
-  a {
-    color: black;
-    opacity: 0.6;
-    &:hover {
-      border-bottom: 2px solid $main-color;
-
+    &.not-active {
+      color: black;
+      opacity: 0.6;
     }
   }
   p.error {
@@ -35,22 +31,33 @@
   input {
     border-radius: 40px;
   }
-  .btn  {
+  .btn {
     border-radius: 40px;
     width: 100%;
     color: white;
     background-color: $main-color;
     @media all and (min-width: 768px) {
       max-width: 50%;
+    }
   }
+  @media all and (min-width: 768px) {
+    form {
+      max-width: 70%;
+      margin: 0 auto;
+    }
+    h4 {
+      font-size: 24px;
+    }
   }
-   @media all and (min-width: 768px) {
-      form {
-        max-width: 70%;
-        margin: 0 auto;
-      }
-      h4 {
-        font-size: 24px;
-      }
+  .forgot-password {
+    position: relative;
+    .close-btn {
+      cursor: pointer;
+      position: absolute;
+      right: 0px;
+      top: -10px;
+    }
   }
 }
+
+

@@ -18,7 +18,8 @@ class EditProfile extends Component {
         message: ''
       },
       successEmail: '',
-      successPassword: ''
+      successPassword: '',
+      errorPassword: ''
     };
   }
 
@@ -77,9 +78,12 @@ class EditProfile extends Component {
       // User re-authenticated.
       user.updatePassword(newPassword).then(() => {
         // Update successful.
-        this.setState({ successPassword: 'Hasło zostało zmienione.' });
-      }).catch(error => this.setState({ error }));
-    }).catch(error => this.setState({ error }));
+        this.setState({ 
+          successPassword: 'Hasło zostało zmienione.',
+          errorPassword: ''
+        });
+      }).catch(error => this.setState({ errorPassword: error.message }));
+    }).catch(error => this.setState({ errorPassword: error.message }));
   }
 
   imageError = () => {
@@ -111,59 +115,69 @@ class EditProfile extends Component {
                 <label htmlFor="photo">Ustaw lub zmień zdjęcie profilowe</label>
                 <input type="text" className="form-control" placeholder="Link do zdjęcia" name="photo" value={this.state.photoURL || ''} onChange={e => this.setState({ photoURL: e.target.value })} />
               </div>
-              <button 
-                className="btn btn-lg" 
-                type="submit"
-                onClick={e => this.updateUser(e)}
-              >
-                Zapisz
-              </button>
+              <div className="row text-center">
+                <button 
+                  className="btn btn-lg" 
+                  type="submit"
+                  onClick={e => this.updateUser(e)}
+                >
+                  Zapisz
+                </button>
+              </div>
             </fieldset>  
           </form>
         </div>
         <div className="email__edit col-md-8 col-md-push-4">  
           <form>
             <fieldset>
-              <legend>Email</legend>
+              <legend>Zmiana adresu e-mail</legend>
               <p className="success-message">{this.state.successEmail}</p>
               <div className="form-group">
-                <label htmlFor="email">Zmień email</label>
+                <label htmlFor="email">Nowy adres e-mail</label>
                 <input type="email" className="form-control" placeholder="Email" name="email" value={this.state.email} onChange={e => this.setState({ email: e.target.value })} />
               </div>
               <div className="form-group">
-                <label htmlFor="providedPassword">Wpisz hasło</label>
+                <label htmlFor="providedPassword">Hasło</label>
                 <input type="password" className="form-control" name="providedPassword" placeholder="Hasło" onChange={e => this.setState({ providedPassword: e.target.value })} />
               </div>
-              <button 
-                className="btn btn-lg" 
-                type="submit"
-                onClick={e => this.changeEmail(e)}
-              >
-                Zapisz
-              </button>
+              <div className="text-center">
+                <button 
+                  className="btn btn-lg" 
+                  type="submit"
+                  onClick={e => this.changeEmail(e)}
+                >
+                  Zapisz
+                </button>
+
+              </div>
             </fieldset>  
           </form>
         </div>
         <div className="password__edit col-md-8 col-md-push-4" >
           <form>
             <fieldset>
-              <legend>Hasło</legend>
-              <p className="success-message">{this.state.successPassword}</p>
+              <legend>Zmiana hasła</legend>
+              <p>W celu zmiany hasła, podaj obecne hasło, a następnie wpisz nowe hasło.</p>
               <div className="form-group">
-                <label htmlFor="new-password">Wpisz nowe hasło</label>
-                <input type="password" className="form-control" name="new-password" placeholder="Nowe hasło" onChange={e => this.setState({ newPassword: e.target.value })} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="old-password">Wpisz obecne hasło</label>
+                <label htmlFor="old-password">Obecne hasło</label>
                 <input type="password" className="form-control" name="old-password" placeholder="Obecne hasło" onChange={e => this.setState({ providedPassword: e.target.value })} />
               </div>
-              <button 
-                className="btn btn-lg" 
-                type="submit"
-                onClick={e => this.changePassword(e)}
-              >
-                Zapisz
-              </button>
+              <div className="form-group">
+                <label htmlFor="new-password">Nowe hasło</label>
+                <input type="password" className="form-control" name="new-password" placeholder="Nowe hasło" onChange={e => this.setState({ newPassword: e.target.value })} />
+              </div>
+              <p className="success-message">{this.state.successPassword}</p>
+              <p className="error-message">{this.state.errorPassword}</p>
+              <div className="text-center">
+                <button 
+                  className="btn btn-lg" 
+                  type="submit"
+                  onClick={e => this.changePassword(e)}
+                >
+                  Zapisz
+                </button>
+
+              </div>
             </fieldset>  
           </form>
         </div>

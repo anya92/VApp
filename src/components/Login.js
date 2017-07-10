@@ -15,7 +15,9 @@ class Login extends Component {
         message: ''
       },
       renderForgot: false,
-      forgotEmail: ''
+      forgotEmail: '',
+      resetSuccess: '',
+      resetError: ''
     };
   }
 
@@ -40,29 +42,29 @@ class Login extends Component {
     const { forgotEmail } = this.state;
     firebaseApp.auth().sendPasswordResetEmail(forgotEmail).then(() => {
       // Email sent.
-      this.setState({ resetMessage: 'Email został wysłany.' })
-    }).catch(error => console.log(error));
+      this.setState({ 
+        resetSuccess: 'Email został wysłany.', 
+        resetError: ''
+      });
+    }).catch(error => this.setState({ resetError: error.message }));
   }
 
   render() {
     return (
       <div className="login">
         <div className="header__login text-center">
-          <h4 className="active login-title">Zaloguj się</h4>
+          <h4 className="active">Zaloguj się</h4>
           <Link to="/signup">
-            <h4 className="signup-title">Zarejestruj się</h4>
+            <h4 className="not-active">Zarejestruj się</h4>
           </Link>
         </div>
-        <div>
-          <p className="error">{this.state.error.message}</p>
-        </div>
         <form>
+          <p className="error">{this.state.error.message}</p>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input 
               type="email"
               name="email"
-              placeholder="email"
               className="form-control"
               onChange={e => this.setState({ email: e.target.value })}
             />
@@ -73,26 +75,31 @@ class Login extends Component {
               type="password"
               name="password"
               className="form-control"
-              placeholder="password"
               onChange={e => this.setState({ password: e.target.value })}
              />
+          </div>
+          <div className="text-center">
+            <button
+              className="btn btn-lg"
+              onClick={e => this.signIn(e)}
+            >
+              Zaloguj się
+            </button>
+
           </div>   
-          <button
-            className="btn btn-lg"
-            onClick={e => this.signIn(e)}
-          >
-            Zaloguj się
-          </button>
         </form>
         <hr/>
         {
           !this.state.renderForgot 
-          ? <button 
-              className="btn btn-lg forgot-password"
-              onClick={this.forgotPassword}
-            >
-              Zapomniałeś hasła?
-            </button>
+          ? <div className="text-center">
+              <button 
+                className="btn btn-lg"
+                onClick={this.forgotPassword}
+              >
+                Zapomniałeś hasła?
+              </button>
+
+            </div>
           : <div></div>  
         }
         
@@ -100,23 +107,29 @@ class Login extends Component {
           this.state.renderForgot 
           ? (
               <div className="forgot-password">
-                <p onClick={this.forgotPassword}>&#x2715;</p>
-                <div className="form-group">
-                  <label htmlFor="forgot-email">Wpisz email, </label>
-                  <input 
-                    type="email" 
-                    name="forgot-email" 
-                    className="form-control" 
-                    onChange={e => this.setState({ forgotEmail: e.target.value })}
-                  />
+                <p className="close-btn" onClick={this.forgotPassword}>&#x2715;</p>
+                <form>
+                  <div className="form-group text-center">
+                    <label htmlFor="forgot-email">Nie pamiętasz hasła? Podaj swój adres e-mail. <br/>Zostanie wysłany na niego link do zmiany hasła. </label>
+                    <input 
+                      type="email" 
+                      name="forgot-email" 
+                      className="form-control"
+                      onChange={e => this.setState({ forgotEmail: e.target.value })}
+                    />
+                  </div>
+                  <p className="success-message">{this.state.resetSuccess}</p>
+                  <p className="error-message">{this.state.resetError}</p>
+                </form>
+                <div className="text-center">
+                  <button 
+                    type="submit" 
+                    className="btn btn-lg"
+                    onClick={this.sendReset}
+                  >
+                    Wyślij
+                  </button>
                 </div>
-                <button 
-                  type="submit" 
-                  className="btn btn-lg"
-                  onClick={this.sendReset}
-                >
-                  Wyślij
-                </button>
               </div>
             )
           : <div></div>

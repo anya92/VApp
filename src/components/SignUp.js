@@ -26,29 +26,44 @@ class SignUp extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Sign Up</h1>
+      <div className="login">
+        <div className="header__login text-center">
+          <Link to="/login">
+            <h4 className="not-active">Zaloguj się</h4>
+          </Link>
+            <h4 className="active">Zarejestruj się</h4>
+        </div>
         <div>
-          {this.state.error.message}
         </div>
         <form>
-          <input
-            type="email"
-            placeholder="email"
-            onChange={e => this.setState({ email: e.target.value})}
-          />
-          <input
-            type="password"
-            placeholder="password"
-            onChange={e => this.setState({ password: e.target.value})}
-          />
-          <button
-            onClick={e => this.signUp(e)}
-          >
-            Sign Up
-          </button>
+          <p className="error">{this.state.error.message}</p>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              className="form-control"
+              onChange={e => this.setState({ email: e.target.value})}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Hasło</label>
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              onChange={e => this.setState({ password: e.target.value})}
+            />
+          </div>
+          <div className="text-center">
+            <button
+              className="btn btn-lg"
+              onClick={e => this.signUp(e)}
+            >
+              Zarejestruj się
+            </button>
+          </div>
         </form>
-        <Link to="/login">Already a user? Sign in instead</Link>
       </div>
     );
   }

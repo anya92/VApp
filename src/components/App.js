@@ -12,6 +12,7 @@ import '../styles/styles.css';
 // components
 
 import NavbarComponent from './NavbarComponent';
+import Footer from './Footer';
 import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
@@ -99,6 +100,7 @@ class App extends Component {
               </Switch>
             </div>  
           </div>
+          <Footer />
         </div>
       </Router>
     );  

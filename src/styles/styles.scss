@@ -1,16 +1,23 @@
 @import 'partials/colors';
 @import 'partials/loading';
 @import 'partials/navbar';
+@import 'partials/footer';
 @import 'partials/content';
 @import 'partials/profile';
 @import 'partials/login';
-
+@import 'partials/buttons';
 
 
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
+html {
+  height: 100%;
+}
+
 body {
   background-color: $background-color;
+  position: relative;
+  min-height: 100%;
   font-family: 'Nunito';
   font-size: 18px; 
 }

@@ -75,11 +75,7 @@
       padding: 10px;
     } 
   }
-  .success-message {
-    color: $green;
-    // font-weight: bold;
-    // margin-top: 0;
-  }
+  
   .user-photo__edit {
     border-radius: 100%;
     border: 1px solid #eee;
@@ -114,10 +110,22 @@
     border-radius: 0;
     color: white;
     width: 50%;
-    float: right;
+    margin: 0 auto;
+    margin-top: 10px;
+
+    // float: right;
     @media all and (max-width: 480px) {
       width: 100%;
     }
   }
 }
 
+
+.success-message {
+    color: $green;
+    // font-weight: bold;
+    // margin-top: 0;
+  }
+  .error-message {
+    color: $red;
+  }
