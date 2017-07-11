@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { firebaseApp } from '../firebase';
+import { firebaseApp, userRef } from '../firebase';
 
 class SignUp extends Component {
   constructor(props) {
@@ -25,6 +25,15 @@ class SignUp extends Component {
     const { email, password, confirmPassword } = this.state;
     if (this.confirmPassword(password, confirmPassword)) {
       firebaseApp.auth().createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        // saving user to database
+        const { uid, email, displayName, photoURL } = user; 
+        userRef.child(uid).set({
+          email,
+          displayName,
+          photoURL
+        });
+      })
       .catch(error => {
         this.setState({ error });
       });
