@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import * as firebase from 'firebase';
-import { firebaseApp } from '../firebase';
+import { firebaseApp, userRef } from '../firebase';
 
 
 class Login extends Component {
@@ -25,6 +25,10 @@ class Login extends Component {
     e.preventDefault();
     const { email, password } = this.state;
     firebaseApp.auth().signInWithEmailAndPassword(email, password)
+      .then(user => {
+        const { uid, email } = user;
+        userRef.child(uid).update({ email });
+      })
       .catch(error => {
         this.setState({ error });
       }); 

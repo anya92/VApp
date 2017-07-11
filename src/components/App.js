@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getUser, logOutUser } from '../actions';
-import { firebaseApp } from '../firebase';
+import { firebaseApp, userRef } from '../firebase';
 
 // import '../../node_modules/jquery/dist/jquery.min.js';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -22,8 +22,7 @@ import EditProfile from './protected/EditProfile';
 import Profile from './protected/Profile';
 import Add from './protected/Add';
 
-// routes
-// https://github.com/tylermcginnis/react-router-firebase-auth
+// routes (https://github.com/tylermcginnis/react-router-firebase-auth)
 
 function PrivateRoute({ component: Component, auth, ...rest }) {
   return (
@@ -61,12 +60,16 @@ class App extends Component {
   componentDidMount() {
     this.removeListener = firebaseApp.auth().onAuthStateChanged(user => {
       if (user) {
-        const { email, displayName, photoURL } = user;
-        this.props.getUser(email, displayName, photoURL);
-        this.setState({
-          auth: true,
-          loading: false
+        const { uid, email, displayName, photoURL } = user;
+        userRef.child(uid).on('value', snap => {
+          const { email, displayName, photoURL } = snap.val();
+          this.props.getUser(email, displayName, photoURL);
+          this.setState({
+            auth: true,
+            loading: false
+          });
         });
+
       } else {
         this.setState({
           auth: false,
@@ -94,7 +97,7 @@ class App extends Component {
                 <PublicRoute auth={this.state.auth} path='/login' component={Login} user={this.props.user} />
                 <PublicRoute auth={this.state.auth} path='/signup' component={SignUp} />
                 <PrivateRoute auth={this.state.auth} exact path='/profil' component={Profile} user={this.props.user} />
-                <PrivateRoute auth={this.state.auth} path='/ustawienia' component={EditProfile} user={this.props.user} getUser={this.props.getUser} />
+                <PrivateRoute auth={this.state.auth} path='/ustawienia' component={EditProfile} user={this.props.user} />
                 <PrivateRoute auth={this.state.auth} path='/add' component={Add} user={this.props.user} />
                 <Route component={NotFound} />
               </Switch>

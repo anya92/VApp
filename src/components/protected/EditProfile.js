@@ -43,14 +43,12 @@ class EditProfile extends Component {
       photoURL,
     }).then(() => {
       // Update successful.
-      const { uid, email, displayName, photoURL } = user;
-      this.props.getUser(email, displayName, photoURL);
+      const { uid, displayName, photoURL } = user;
       // update user in database
       userRef.child(uid).update({
         displayName,
         photoURL
       });
-      // console.log(user);
       // redirect to profile page
       this.props.history.push('/profil');
     }, error => {
@@ -69,8 +67,7 @@ class EditProfile extends Component {
       // User re-authenticated.
       user.updateEmail(email).then(() => {
         // Update successful.
-        const { uid, email, displayName, photoURL } = user;
-        this.props.getUser(email, displayName, photoURL);
+        const { uid, email } = user;
         // update user in database
         userRef.child(uid).update({
           email
