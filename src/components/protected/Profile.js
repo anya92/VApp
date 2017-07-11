@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { userRef } from '../../firebase';
+import { userRef, pollRef } from '../../firebase';
 const editIcon = require('../../icons/edit.svg');
 const userIcon = require('../../icons/user.png');
 const errorIcon = require('../../icons/error.png');
@@ -12,21 +12,20 @@ class Profile extends Component {
     this.state = {
       display: 'tab-1',
       loading: true,
-      users: null
+      userPolls: null
     }
   }
 
-  // componentDidMount() {
-  //   userRef.on('value', snap => {
-  //     let users = [];
-  //     snap.forEach(user => {
-  //       const { email, displayName, photoURL } = user.val();
-  //       const userId = user.key;
-  //       users.push({userId, email, displayName, photoURL});
-  //     });
-  //     this.setState({ users, loading: false });
-  //   });
-  // }
+  componentDidMount() {
+    let { polls, user } = this.props;
+    let userPolls = polls.filter(poll => {
+      return poll.author === user.uid;
+    });
+    this.setState({
+      userPolls,
+      loading: false
+    });
+  }
 
   imageError = () => {
     this.image.src = errorIcon;
@@ -34,6 +33,7 @@ class Profile extends Component {
 
   render() {
     const { email, displayName, photoURL } = this.props.user;
+    const { userPolls } = this.state;
     return (
       <div className="text-center">
         <div className="header">
@@ -68,7 +68,13 @@ class Profile extends Component {
           
         </div>
         <div className="row">
-            Ankiety
+          {
+            this.state.loading
+            ? <div id="loading"></div>
+            : userPolls.map(poll => {
+                return <div key={poll.pollKey}>{poll.author}</div>
+              })
+          }
         </div>
       </div>
     );

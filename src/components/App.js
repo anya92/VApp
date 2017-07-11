@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getUser, logOutUser } from '../actions';
-import { firebaseApp, userRef } from '../firebase';
+import { getUser, logOutUser, getAllPolls } from '../actions';
+import { firebaseApp, userRef, pollRef } from '../firebase';
 
 // import '../../node_modules/jquery/dist/jquery.min.js';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -58,12 +58,24 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // get polls
+    pollRef.on('value', snap => {
+      let polls = [];
+      snap.forEach(poll => {
+        const { title, answers, slug, author, created_At } = poll.val();
+        console.log(title);
+        const pollKey = poll.key;
+        polls.push({ title, answers, slug, author, created_At, pollKey });
+      });
+      this.props.getAllPolls(polls);
+    });
+    // get user
     this.removeListener = firebaseApp.auth().onAuthStateChanged(user => {
       if (user) {
         const { uid, email, displayName, photoURL } = user;
         userRef.child(uid).on('value', snap => {
           const { email, displayName, photoURL } = snap.val();
-          this.props.getUser(email, displayName, photoURL);
+          this.props.getUser(uid, email, displayName, photoURL);
           this.setState({
             auth: true,
             loading: false
@@ -96,9 +108,9 @@ class App extends Component {
                 <Route exact path='/' component={Home} />
                 <PublicRoute auth={this.state.auth} path='/login' component={Login} user={this.props.user} />
                 <PublicRoute auth={this.state.auth} path='/signup' component={SignUp} />
-                <PrivateRoute auth={this.state.auth} exact path='/profil' component={Profile} user={this.props.user} />
+                <PrivateRoute auth={this.state.auth} exact path='/profil' component={Profile} user={this.props.user} polls={this.props.polls} />
                 <PrivateRoute auth={this.state.auth} path='/ustawienia' component={EditProfile} user={this.props.user} />
-                <PrivateRoute auth={this.state.auth} path='/add' component={Add} user={this.props.user} />
+                <PrivateRoute auth={this.state.auth} path='/dodaj' component={Add} user={this.props.user} />
                 <Route component={NotFound} />
               </Switch>
             </div>  
@@ -111,11 +123,12 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  const { user } = state;
+  const { user, polls } = state;
   return {
-    user
+    user,
+    polls
   }
 }
 
-export default connect(mapStateToProps, { getUser, logOutUser })(App);
+export default connect(mapStateToProps, { getUser, logOutUser, getAllPolls })(App);
 

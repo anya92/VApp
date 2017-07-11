@@ -11,8 +11,9 @@ let user = null;
 export default (state = user, action) => {
   switch (action.type) {
     case GET_USER:
-      const { email, displayName, photoURL } = action;
+      const { uid, email, displayName, photoURL } = action;
       user = {
+        uid,
         email,
         displayName,
         photoURL
