@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import { firebaseApp } from '../../firebase';
+import { firebaseApp, userRef } from '../../firebase';
 const userIcon = require('../../icons/user.png');
 const errorIcon = require('../../icons/error.png');
 
@@ -43,8 +43,15 @@ class EditProfile extends Component {
       photoURL,
     }).then(() => {
       // Update successful.
-      this.props.getUser(user.email, user.displayName, user.photoURL);
+      const { uid, email, displayName, photoURL } = user;
+      this.props.getUser(email, displayName, photoURL);
+      // update user in database
+      userRef.child(uid).update({
+        displayName,
+        photoURL
+      });
       // console.log(user);
+      // redirect to profile page
       this.props.history.push('/profil');
     }, error => {
       // An error happened.
@@ -62,7 +69,12 @@ class EditProfile extends Component {
       // User re-authenticated.
       user.updateEmail(email).then(() => {
         // Update successful.
-        this.props.getUser(user.email, user.displayName, user.photoURL);
+        const { uid, email, displayName, photoURL } = user;
+        this.props.getUser(email, displayName, photoURL);
+        // update user in database
+        userRef.child(uid).update({
+          email
+        });
         this.setState({ successEmail: 'Email został zmieniony pomyślnie.' })
         // this.props.history.push('/profil');
       }).catch(error => this.setState({ error }));

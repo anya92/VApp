@@ -25,13 +25,11 @@ class SignUp extends Component {
     const { email, password, confirmPassword } = this.state;
     if (this.confirmPassword(password, confirmPassword)) {
       firebaseApp.auth().createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        // saving user to database
-        const { uid, email, displayName, photoURL } = user; 
+      .then(user => {
+        // saving user to database - uid as key
+        const { uid, email } = user; 
         userRef.child(uid).set({
-          email,
-          displayName,
-          photoURL
+          email
         });
       })
       .catch(error => {
