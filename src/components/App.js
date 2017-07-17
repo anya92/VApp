@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getUser, logOutUser, getAllPolls } from '../actions';
-import { firebaseApp, userRef, pollRef } from '../firebase';
+import { firebaseApp, userRef } from '../firebase';
 
-// import '../../node_modules/jquery/dist/jquery.min.js';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-// import '../../node_modules/bootstrap/dist/js/bootstrap.min.js';
 import '../styles/styles.css';
 
 // components
@@ -14,6 +12,7 @@ import '../styles/styles.css';
 import NavbarComponent from './NavbarComponent';
 import Footer from './Footer';
 import Home from './Home';
+import SinglePoll from './SinglePoll';
 import Login from './Login';
 import SignUp from './SignUp';
 import NotFound from './NotFound';
@@ -58,22 +57,14 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // get polls
-    pollRef.on('value', snap => {
-      let polls = [];
-      snap.forEach(poll => {
-        const { title, answers, slug, author, created_At } = poll.val();
-        console.log(title);
-        const pollKey = poll.key;
-        polls.push({ title, answers, slug, author, created_At, pollKey });
-      });
-      this.props.getAllPolls(polls);
-    });
+    this.props.getAllPolls();
+   
     // get user
     this.removeListener = firebaseApp.auth().onAuthStateChanged(user => {
       if (user) {
-        const { uid, email, displayName, photoURL } = user;
+        const { uid } = user;
         userRef.child(uid).on('value', snap => {
+          // console.log('get user');
           const { email, displayName, photoURL } = snap.val();
           this.props.getUser(uid, email, displayName, photoURL);
           this.setState({
@@ -83,6 +74,8 @@ class App extends Component {
         });
 
       } else {
+          // console.log('get user');
+
         this.setState({
           auth: false,
           loading: false
@@ -93,11 +86,16 @@ class App extends Component {
   }
 
   componentWillUnmount() {
+    // this.getPolls();
+
+      
+
     this.removeListener();
   }
 
   render() {
     // const { user } = this.props;
+
     return this.state.loading ? <div id="loading"></div> : (
       <Router>
         <div>
@@ -105,10 +103,11 @@ class App extends Component {
           <div className="container">
             <div className="col-md-10 col-md-offset-1 content">
               <Switch>
-                <Route exact path='/' component={Home} />
+                <Route exact path='/' render={() => (<Home />)} />
+                <Route exact path='/glosowanie/:key' component={SinglePoll} />
                 <PublicRoute auth={this.state.auth} path='/login' component={Login} user={this.props.user} />
                 <PublicRoute auth={this.state.auth} path='/signup' component={SignUp} />
-                <PrivateRoute auth={this.state.auth} exact path='/profil' component={Profile} user={this.props.user} polls={this.props.polls} />
+                <PrivateRoute auth={this.state.auth} exact path='/profil' component={Profile} user={this.props.user} />
                 <PrivateRoute auth={this.state.auth} path='/ustawienia' component={EditProfile} user={this.props.user} />
                 <PrivateRoute auth={this.state.auth} path='/dodaj' component={Add} user={this.props.user} />
                 <Route component={NotFound} />

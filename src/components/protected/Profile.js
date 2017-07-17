@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { userRef, pollRef } from '../../firebase';
+// import moment from 'moment';
+import { connect } from 'react-redux';
+// import { pollRef } from '../../firebase';
+
 const editIcon = require('../../icons/edit.svg');
 const userIcon = require('../../icons/user.png');
 const errorIcon = require('../../icons/error.png');
+require('moment/locale/pl');
+// moment.locale('pl');
 
 class Profile extends Component {
   constructor(props) {
@@ -11,20 +16,26 @@ class Profile extends Component {
 
     this.state = {
       display: 'tab-1',
-      loading: true,
-      userPolls: null
+      loading: false
     }
   }
 
   componentDidMount() {
-    let { polls, user } = this.props;
-    let userPolls = polls.filter(poll => {
-      return poll.author === user.uid;
-    });
-    this.setState({
-      userPolls,
-      loading: false
-    });
+    // const { user } = this.props;
+    // pollRef.on('value', snap => {
+    //   let userPolls = [];
+    //   snap.forEach(poll => {
+    //     const { title, answers, slug, author, created_At } = poll.val();
+    //     const pollKey = poll.key;
+    //     if (author === user.uid) {
+    //       userPolls.push({ title, answers, slug, author, created_At, pollKey });
+    //     }
+    //   });
+    //   this.props.getUserPolls(userPolls);
+    //   this.setState({
+    //     loading: false
+    //   });
+    // });
   }
 
   imageError = () => {
@@ -33,7 +44,8 @@ class Profile extends Component {
 
   render() {
     const { email, displayName, photoURL } = this.props.user;
-    const { userPolls } = this.state;
+    // console.log(this.props.polls);
+    // const { userPolls } = this.props;
     return (
       <div className="text-center">
         <div className="header">
@@ -65,20 +77,25 @@ class Profile extends Component {
               <p>Tab 4</p>
             </div>
           </div>
-          
+          {
+            this.props.polls.map((poll,i) => {
+              return <div key={i}>{poll.title}</div> 
+            })
+          }
         </div>
         <div className="row">
-          {
-            this.state.loading
-            ? <div id="loading"></div>
-            : userPolls.map(poll => {
-                return <div key={poll.pollKey}>{poll.author}</div>
-              })
-          }
         </div>
       </div>
     );
   }
 }
 
-export default Profile;
+function mapStateToProps(state) {
+  let { polls, user } = state;
+  const userPolls = polls.filter(poll => poll.author === user.uid);
+  return {
+    polls: userPolls
+  };
+}
+
+export default connect(mapStateToProps, null)(Profile);
