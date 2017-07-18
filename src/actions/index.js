@@ -25,9 +25,9 @@ export function getAllPolls() {
     pollRef.on('value', snap => {
       let polls = [];
       snap.forEach(poll => {
-        const { title, author, answers, created_At, slug, numberOfVotes } = poll.val(); //TODO 
+        const { title, author, answers, created_At, numberOfVotes } = poll.val(); //TODO 
         const pollKey = poll.key;
-        polls.push({ pollKey, title, author, answers, created_At, slug, numberOfVotes });
+        polls.push({ pollKey, title, author, answers, created_At, numberOfVotes });
       });
       dispatch(getAllPoolsAction(polls));
     },

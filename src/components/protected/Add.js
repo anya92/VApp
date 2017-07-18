@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { pollRef } from '../../firebase';
 
-const AnswerInput = ({ id, name, answerChange, removeAnswerInput, value }) => {
+const AnswerInput = ({ id, answerChange, removeAnswerInput, value }) => {
   return (id <= 1) ? (
       <input 
         type="text"
-        name={name}
         className="form-control"
         onChange={e => answerChange(id, e)}
         value={value || ''}
@@ -15,7 +14,6 @@ const AnswerInput = ({ id, name, answerChange, removeAnswerInput, value }) => {
     <div className="input-group">
       <input 
         type="text"
-        name={name}
         className="form-control"
         value={value || ''}
         onChange={e => answerChange(id, e)}
@@ -23,7 +21,7 @@ const AnswerInput = ({ id, name, answerChange, removeAnswerInput, value }) => {
       <span 
         className="input-group-addon"
         onClick={e => removeAnswerInput(id, e)}
-      > - </span>
+      ><p>-</p></span>
     </div>
   );
 }
@@ -33,45 +31,40 @@ class Add extends Component {
     super(props);
 
     this.state = {
-      title: '',
-      answerInputs: ['answer-0', 'answer-1'],
+      title: '', 
+      numberOfAnswers: 2,
       answers: []
     }
   }
 
   addAnswerInput = e => {
     e.preventDefault();
-    let newAnswerInputs = [...this.state.answerInputs, `answer-${this.state.answerInputs.length}`];
+    let { numberOfAnswers } = this.state;
+    numberOfAnswers += 1;
     this.setState({ 
-      answerInputs: newAnswerInputs
+      numberOfAnswers
     });
   }
 
   removeAnswerInput = (id, e) => {
     e.preventDefault();
-    if (this.state.answerInputs.length <= 2) {
+
+    if (this.state.numberOfAnswers <= 2) {
       return;
     }
-    let updatedInputs = this.state.answerInputs.slice(id + 1).map((input, i) => {
-      return `answer-${this.state.answerInputs.slice(0, id).length + i}`
-    });
-    
-    let newAnswerInputs = [
-      ...this.state.answerInputs.slice(0, id),
-      ...updatedInputs
-    ];
-    
-    let newAnswers = [...this.state.answers];
-    newAnswers.splice(id, 1); 
+
+    let { numberOfAnswers, answers } = this.state;
+    numberOfAnswers -= 1;
+    answers.splice(id, 1);
 
     this.setState({
-      answerInputs: newAnswerInputs,
-      answers: newAnswers
+      numberOfAnswers,
+      answers
     });
   }
 
   answerChange = (id, e) => {
-    let answers = [...this.state.answers];
+    let { answers } = this.state;
     answers[id] = e.target.value;
     this.setState({ answers });
   }
@@ -83,16 +76,15 @@ class Add extends Component {
     answers.forEach(answer => {
       ansObj[answer] = 0
     });
-    const slug = title.replace(/\s/g, '-').toLowerCase(); // TODO remove slug
     pollRef.push({
       title,
-      slug,
       answers: ansObj,
       created_At: Date.now(),
       author: this.props.user.uid,
       numberOfVotes: 0
-    });
-    this.props.history.push('/profil');
+    }).then(poll => this.props.history.push(`/glosowanie/${poll.key}`))
+      .catch(error => console.log(error));
+    
   }
 
   render() {
@@ -115,17 +107,22 @@ class Add extends Component {
             </div>
               <div className="form-group">
                 <label htmlFor="answers">Odpowiedzi</label>
-                {
+                 {
+                  [...Array(this.state.numberOfAnswers).keys()].map((i) => {
+                    return <AnswerInput key={i} id={i} answerChange={this.answerChange} removeAnswerInput={this.removeAnswerInput} value={this.state.answers[i]}/>
+                  })
+                }
+                {/*
                   this.state.answerInputs.map((name, i) => {
                     return <AnswerInput key={i} id={i} name={name} answerChange={this.answerChange} removeAnswerInput={this.removeAnswerInput} value={this.state.answers[i]}/>
                   })
-                }
+                */}
               </div>
+              <div className="add-answer" onClick={e => this.addAnswerInput(e)}><p>+</p></div>
               <button className="btn btn-lg" type="submit">Dodaj</button>          
+
           </form>
         </div>
-        <button onClick={e => this.addAnswerInput(e)}>Dodaj odpowiedź</button>
-        <button onClick={e => this.removeAnswerInput(e)}>Usuń odpowiedź</button>
       </div>
     );
   }

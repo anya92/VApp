@@ -8,3 +8,28 @@
       padding: 10px;
     } 
 }
+
+.add-poll-form {
+  input {
+    // background-color: red !important;
+    border-color: purple;
+  }
+  .input-group-addon {
+    background-color: transparent;
+    border: none;
+    // width: 40px;
+    max-height: 20px;
+    background-color: #eee;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .add-answer {
+    width: 40px;
+    height: 40px;
+    background-color: $main-color;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    
+  } 
+}
