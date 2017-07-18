@@ -1,5 +1,5 @@
 import { GET_USER, LOGOUT_USER, GET_ALL_POLLS } from '../constants';
-import { pollRef } from '../firebase';
+import { userRef, pollRef } from '../firebase';
 
 export function getUser(uid, email, displayName, photoURL) {
   const action = {
@@ -46,27 +46,26 @@ function getAllPoolsAction(polls) {
   return action;
 }
 
-// export function getSinglePoll(key) {
-//   return dispatch => {
-//     dispatch({ type: 'GET_SINGLE_POLL_REQUEST' });
-//     pollRef.child(key).on('value', snap => {
-//       let singlePoll = snap.val();
-//       // if (!singlePoll) {
-//       //   return;
-//       // }
-//       userRef.child(singlePoll.author).on('value', snap => {
-//         const { displayName, email, photoURL } = snap.val();
-//         singlePoll.author = { displayName, photoURL, email };
-//         dispatch({ type: 'GET_SINGLE_POLL', singlePoll });
-//       },
-//       error => {
-//         dispatch({ type: 'GET_SINGLE_POLL_ERROR' });
-//         throw error;
-//       });
-//     },
-//     error => {
-//       dispatch({ type: 'GET_SINGLE_POLL_ERROR' });
-//       throw error;
-//     });
-//   }
-// }
+export function getSinglePoll(key) {
+  return dispatch => {
+    dispatch({ type: 'GET_SINGLE_POLL_REQUEST' });
+    let singlePoll = null;
+    pollRef.child(key).on('value', snap => {
+      singlePoll = snap.val();
+      singlePoll.pollKey = snap.key;
+      userRef.child(singlePoll.author).on('value', snap => {
+        const { displayName, email, photoURL } = snap.val();
+        singlePoll.author = { displayName, photoURL, email };
+        dispatch({ type: 'GET_SINGLE_POLL', singlePoll });
+      },
+      error => {
+        dispatch({ type: 'GET_SINGLE_POLL_ERROR' });
+        throw error;
+      });
+    },
+    error => {
+      dispatch({ type: 'GET_SINGLE_POLL_ERROR' });
+      throw error;
+    });
+  }
+}

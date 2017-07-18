@@ -32,14 +32,17 @@ class PollChart extends Component {
   componentWillReceiveProps(nextProps) {
     const { poll } = nextProps;
     let { answers } = poll;
-    let labels = [], data = [];
+    let labels = [], data = [], backgroundColor = [];
     for (let answer in answers) {
       labels.push(answer);
       data.push(answers[answer]);
+      // backgroundColor.push(this.generateColor());
+      // console.log('backgroundColor', backgroundColor);
     }
     this.setState({
       labels,
       data
+      // backgroundColor
     });
   }
 
@@ -47,7 +50,7 @@ class PollChart extends Component {
     const reds = Math.floor(Math.random() * 256);
     const greens = Math.floor(Math.random() * 256);
     const blues = Math.floor(Math.random() * 256);
-    return `rgba(${reds},${greens},${blues}, 0.5)`;
+    return `rgba(${reds},${greens},${blues}, 0.3)`;
   }
 
   render() {
@@ -73,9 +76,6 @@ class PollChart extends Component {
     };
     return (
       <div>
-        {poll.title} <br/>
-        {poll.numberOfVotes} <br/>
-        <pre>{JSON.stringify(poll, null, ' ')}</pre>
         <div className="chart">
           Doughnut
           <Doughnut data={data2} />

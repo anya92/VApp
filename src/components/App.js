@@ -57,14 +57,13 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.props.getAllPolls();
+    // this.props.getAllPolls();
    
     // get user
     this.removeListener = firebaseApp.auth().onAuthStateChanged(user => {
       if (user) {
         const { uid } = user;
         userRef.child(uid).on('value', snap => {
-          // console.log('get user');
           const { email, displayName, photoURL } = snap.val();
           this.props.getUser(uid, email, displayName, photoURL);
           this.setState({
@@ -74,8 +73,6 @@ class App extends Component {
         });
 
       } else {
-          // console.log('get user');
-
         this.setState({
           auth: false,
           loading: false
@@ -86,16 +83,10 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    // this.getPolls();
-
-      
-
     this.removeListener();
   }
 
   render() {
-    // const { user } = this.props;
-
     return this.state.loading ? <div id="loading"></div> : (
       <Router>
         <div>

@@ -13,7 +13,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-
+    this.props.getAllPolls();
   } 
 
   render() {

@@ -1,46 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { pollRef } from '../firebase';
- 
+import { getSinglePoll } from '../actions';
+
 import PollChart from './PollChart';
+import Vote from './Vote';
 
 class SinglePoll extends Component {
   constructor() {
     super();
 
     this.state = {
-      alreadyVoted: false //TODO localStorage 
+      alreadyVoted: false //TODO localStorage ___done___
     }
   }
 
   componentDidMount() {
-    // check if user has already voted
+    // check if user has already 
+    const key = this.props.match.params.key;
+    this.props.getSinglePoll(key);
+  }
+
+  componentWillReceiveProps(nextProps) {
     const key = this.props.match.params.key;
     const votedPolls = JSON.parse(localStorage.getItem('votedPolls')) || [];
-    console.log('check if user has already voted CDM', key, votedPolls);
     if (votedPolls.includes(key)) {
       this.setState({
-        alreadyVoted: true
+        alreadyVoted: true,
+        author: nextProps.single.author.displayName
       });
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   // check if user has already voted
-  //   const { pollKey } = nextProps.single;
-  //   const votedPolls = JSON.parse(localStorage.getItem('votedPolls')) || [];
-  //   console.log('check if user has already voted CWRP', pollKey, votedPolls);
-  //   if (votedPolls.includes(pollKey)) {
-  //     this.setState({
-  //       alreadyVoted: true
-  //     });
-  //   }
-  // }
-
-  vote = (answer) => {
-    let count = this.props.single.answers[answer] + 1;
+  vote = (e, answer) => {
+    e.preventDefault();
+    let count = this.props.single.answers[answer] + 1;   
     const { answers, pollKey, numberOfVotes } = this.props.single;
     let newNumbersOfVotes = numberOfVotes + 1;
+
     // update poll in firebase
     pollRef.child(pollKey).update({
       answers: {
@@ -60,15 +57,16 @@ class SinglePoll extends Component {
   }
 
   render() {
+    let poll = {'nie': 2};
     return !this.props.single ? <div id="loading"></div> :  (
       <div>
-        Single <br/>
+        <div className="block"><h1>{this.props.single.title}</h1><span>{this.state.author}</span></div>
+        {/*<pre>{JSON.stringify(this.props.single, null, ' ')}</pre>*/}
         {
           this.state.alreadyVoted 
           ? <PollChart poll={this.props.single} />
-          : Object.keys(this.props.single.answers).map((answer, i) => {
-              return <p key={i} onClick={() => this.vote(answer)}>{answer} <span>{this.props.single.answers[answer]}</span></p>
-            })
+          
+          : <Vote poll={this.props.single} vote={this.vote}/>
         }
         
       </div>
@@ -77,13 +75,9 @@ class SinglePoll extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const key = ownProps.match.params.key;
-  const single = state.polls.filter(poll => poll.pollKey === key)[0];
-  // const { uid } = state.user;
   return { 
-    single
-    // uid 
+    single: state.singlePoll
   };
 }
 
-export default connect(mapStateToProps, null)(SinglePoll);
+export default connect(mapStateToProps, { getSinglePoll })(SinglePoll);
