@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { pollRef } from '../firebase';
  
+import PollChart from './PollChart';
+
 class SinglePoll extends Component {
   constructor() {
     super();
@@ -61,15 +63,14 @@ class SinglePoll extends Component {
     return !this.props.single ? <div id="loading"></div> :  (
       <div>
         Single <br/>
-        {this.state.alreadyVoted ? <div>Już głosowałeś</div> : <div>Możesz głosowac</div>}
-        {this.props.match.params.key} <br/>
-        {this.props.single.title} <br/>
-        {this.props.single.created_At}
         {
-          Object.keys(this.props.single.answers).map((answer, i) => {
-            return <p key={i} onClick={() => this.vote(answer)}>{answer} <span>{this.props.single.answers[answer]}</span></p>
-          })
+          this.state.alreadyVoted 
+          ? <PollChart poll={this.props.single} />
+          : Object.keys(this.props.single.answers).map((answer, i) => {
+              return <p key={i} onClick={() => this.vote(answer)}>{answer} <span>{this.props.single.answers[answer]}</span></p>
+            })
         }
+        
       </div>
     );
   }
