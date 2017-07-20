@@ -33,7 +33,8 @@ class Add extends Component {
     this.state = {
       title: '', 
       numberOfAnswers: 2,
-      answers: []
+      answers: [],
+      photoURL: ''
     }
   }
 
@@ -71,14 +72,17 @@ class Add extends Component {
 
   addPoll = e => {
     e.preventDefault();
-    const { title, answers } = this.state;
+    const { title, answers, photoURL } = this.state;
     let ansObj = {};
     answers.forEach(answer => {
+      // Keys must be non-empty strings and can't contain ".", "#", "$", "/", "[", or "]" --> firebase
+      answer = answer.replace(/[.$#/\[\]]/g, '');
       ansObj[answer] = 0
     });
     pollRef.push({
       title,
       answers: ansObj,
+      photoURL,
       created_At: Date.now(),
       author: this.props.user.uid,
       numberOfVotes: 0
@@ -93,35 +97,43 @@ class Add extends Component {
         <div className="block text-center">
           <h1>Dodaj nowe głosowanie</h1>
         </div>
-        <div className="block">
-          <form onSubmit={e => this.addPoll(e)} className="add-poll-form">
-            <div className="form-group">
-              <label htmlFor="title">Pytanie</label>
-              <input 
-                type="text" 
-                className="form-control"
-                name="title"
-                onChange={e => this.setState({ title: e.target.value })}
-                required
-              />
+        <div>
+          <div className="col-sm-6">
+            <div className="user-photo__edit">
+              {this.state.photoURL && <img src={this.state.photoURL || ''} alt="poll-photo" className="img-responsive" />}
             </div>
+          </div>
+          <div className="col-sm-6 block">
+            <form onSubmit={e => this.addPoll(e)} className="add-poll-form">
+              
               <div className="form-group">
-                <label htmlFor="answers">Odpowiedzi</label>
-                 {
-                  [...Array(this.state.numberOfAnswers).keys()].map((i) => {
-                    return <AnswerInput key={i} id={i} answerChange={this.answerChange} removeAnswerInput={this.removeAnswerInput} value={this.state.answers[i]}/>
-                  })
-                }
-                {/*
-                  this.state.answerInputs.map((name, i) => {
-                    return <AnswerInput key={i} id={i} name={name} answerChange={this.answerChange} removeAnswerInput={this.removeAnswerInput} value={this.state.answers[i]}/>
-                  })
-                */}
+                  <label htmlFor="photo">Zdjęcie (opcjonalnie)</label>
+                  <input type="text" name="photo" placeholder="link do zdjęcia" className="form-control" onChange={e => this.setState({ photoURL: e.target.value })}/>
+                </div>
+              <div className="form-group">
+                <label htmlFor="title">Pytanie</label>
+                <input 
+                  type="text" 
+                  className="form-control"
+                  name="title"
+                  onChange={e => this.setState({ title: e.target.value })}
+                  required
+                />
               </div>
-              <div className="add-answer" onClick={e => this.addAnswerInput(e)}><p>+</p></div>
-              <button className="btn btn-lg" type="submit">Dodaj</button>          
+                <div className="form-group">
+                  <label htmlFor="answers">Odpowiedzi</label>
+                   {
+                    [...Array(this.state.numberOfAnswers).keys()].map((i) => {
+                      return <AnswerInput key={i} id={i} answerChange={this.answerChange} removeAnswerInput={this.removeAnswerInput} value={this.state.answers[i]}/>
+                    })
+                  }
+                </div>
+                <div className="add-answer" onClick={e => this.addAnswerInput(e)}><p>+</p></div>
+                <button className="btn btn-lg" type="submit">Dodaj</button>          
 
-          </form>
+            </form>
+
+          </div>
         </div>
       </div>
     );
