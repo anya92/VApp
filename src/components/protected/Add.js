@@ -76,7 +76,7 @@ class Add extends Component {
     let ansObj = {};
     answers.forEach(answer => {
       // Keys must be non-empty strings and can't contain ".", "#", "$", "/", "[", or "]" --> firebase
-      answer = answer.replace(/[.$#/\[\]]/g, '');
+      answer = answer.replace(/[.$#/[\]]/g, '');
       ansObj[answer] = 0
     });
     pollRef.push({
@@ -100,7 +100,7 @@ class Add extends Component {
         <div>
           <div className="col-sm-6">
             <div className="user-photo__edit">
-              {this.state.photoURL && <img src={this.state.photoURL || ''} alt="poll-photo" className="img-responsive" />}
+              {this.state.photoURL && <img src={this.state.photoURL || ''} alt="poll" className="img-responsive" />}
             </div>
           </div>
           <div className="col-sm-6 block">

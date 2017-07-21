@@ -11,12 +11,12 @@ class SinglePoll extends Component {
     super();
 
     this.state = {
-      alreadyVoted: false //TODO localStorage ___done___
+      alreadyVoted: false, //TODO localStorage ___done___
+      singlePoll: null
     }
   }
 
   componentDidMount() {
-    // check if user has already 
     const key = this.props.match.params.key;
     this.props.getSinglePoll(key);
   }
@@ -24,18 +24,23 @@ class SinglePoll extends Component {
   componentWillReceiveProps(nextProps) {
     const key = this.props.match.params.key;
     const votedPolls = JSON.parse(localStorage.getItem('votedPolls')) || [];
+   
+    // check if user has already voted
     if (votedPolls.includes(key)) {
       this.setState({
-        alreadyVoted: true,
-        author: nextProps.single.author.displayName
+        alreadyVoted: true
       });
     }
+
+    this.setState({
+      singlePoll: nextProps.singlePoll
+    });
   }
 
   vote = (e, answer) => {
     e.preventDefault();
-    let count = this.props.single.answers[answer] + 1;   
-    const { answers, pollKey, numberOfVotes } = this.props.single;
+    let count = this.state.singlePoll.answers[answer] + 1;   
+    const { answers, pollKey, numberOfVotes } = this.state.singlePoll;
     let newNumbersOfVotes = numberOfVotes + 1;
 
     // update poll in firebase
@@ -57,16 +62,13 @@ class SinglePoll extends Component {
   }
 
   render() {
-    let poll = {'nie': 2};
-    return !this.props.single ? <div id="loading"></div> :  (
+    return !this.state.singlePoll ? <div id="loading"></div> :  (
       <div>
-        <div className="block"><h1>{this.props.single.title}</h1><span>{this.state.author}</span></div>
-        {/*<pre>{JSON.stringify(this.props.single, null, ' ')}</pre>*/}
+        <div className="block"><h1>{this.state.singlePoll.title}</h1><span>{this.state.author}</span></div>
         {
           this.state.alreadyVoted 
-          ? <PollChart poll={this.props.single} />
-          
-          : <Vote poll={this.props.single} vote={this.vote}/>
+          ? <PollChart poll={this.state.singlePoll} />
+          : <Vote poll={this.state.singlePoll} vote={this.vote} />
         }
         
       </div>
@@ -76,7 +78,7 @@ class SinglePoll extends Component {
 
 function mapStateToProps(state, ownProps) {
   return { 
-    single: state.singlePoll
+    singlePoll: state.singlePoll
   };
 }
 

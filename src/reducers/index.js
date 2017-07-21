@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import user from './reducer_user';
-import polls from './reducer_polls';
 import singlePoll from './reducer_singlePoll';
 
-const pages = (state = [], action) => {
+
+const pollsPerPage = (state = [], action) => {
   switch (action.type) {
-    case 'GET_POLLS_PAGINATION_SUCCESS':
-      const { pages } = action;
-      return pages;
+    case 'GET_POLLS_PER_PAGE_SUCCESS':
+      const { pollsPerPage } = action;
+      return pollsPerPage;
     default:
       return state;  
   }
@@ -15,6 +15,6 @@ const pages = (state = [], action) => {
 
 export default combineReducers({
   user,
-  polls, 
-  singlePoll, pages
+  pollsPerPage, // TODO change to pollsPerPage
+  singlePoll 
 });

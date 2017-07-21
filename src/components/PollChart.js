@@ -32,7 +32,8 @@ class PollChart extends Component {
   componentWillReceiveProps(nextProps) {
     const { poll } = nextProps;
     let { answers } = poll;
-    let labels = [], data = [], backgroundColor = [];
+    let labels = [], data = [];
+    // let backgroundColor = [];
     for (let answer in answers) {
       labels.push(answer);
       data.push(answers[answer]);
@@ -54,7 +55,6 @@ class PollChart extends Component {
   }
 
   render() {
-    const { poll } = this.props;
     const { labels, data, backgroundColor } = this.state;
     console.log(backgroundColor);
     let data2 = {

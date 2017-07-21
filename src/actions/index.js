@@ -1,4 +1,4 @@
-import { GET_USER, LOGOUT_USER, GET_ALL_POLLS } from '../constants';
+import { GET_USER, LOGOUT_USER } from '../constants';
 import { userRef, pollRef } from '../firebase';
 
 export function getUser(uid, email, displayName, photoURL) {
@@ -19,33 +19,42 @@ export function logOutUser() {
   return action;
 }
 
-// add pagination
 
-export function getAllPolls() {
+export function getPollsPerPage(page = 1) {
   return dispatch => {
-    dispatch({ type: 'GET_ALL_POLLS_REQUEST' });
-    pollRef.on('value', snap => {
-      let polls = [];
-      snap.forEach(poll => {
-        const { title, author, answers, created_At, numberOfVotes, photoURL } = poll.val(); //TODO 
-        const pollKey = poll.key;
-        polls.push({ pollKey, title, author, answers, created_At, numberOfVotes, photoURL });
-      });
-      dispatch(getAllPoolsAction(polls));
-    },
-    error => {
-      dispatch({ type: 'GET_ALL_POLLS_ERROR' });
-      throw error;
-    });
-  }
-}
+    dispatch({ type: 'GET_POLLS_PER_PAGE_REQUEST' });
+    fetch(`${pollRef.toString()}.json?shallow=true`) // get number of polls in database
+      .then(res => res.json())
+      .then(data => {
+        const keys = Object.keys(data).sort();
+        const perPage = 10;
+        const numberOfPages = Math.ceil(keys.length / perPage);
+        let nextKey, query, promises = [];
+        for (let i = 0; i < numberOfPages; i++) {
+          nextKey = keys[i * perPage];
+          query = pollRef.orderByKey().limitToFirst(perPage).startAt(nextKey);
+          promises.push(query.once('value'));
+        }
 
-function getAllPoolsAction(polls) {
-  const action = {
-    type: GET_ALL_POLLS,
-    polls
-  };
-  return action;
+        Promise.all(promises)
+          .then(snaps => {
+            let pollsPerPage = [];
+            snaps.forEach((snap, i) => {
+              const polls = snap.val();
+              let page = [];
+              for (let key in polls) {
+                page.push({ key, ...polls[key] });
+              }
+              pollsPerPage.push(page);
+            });
+            dispatch({ type: 'GET_POLLS_PER_PAGE_SUCCESS', pollsPerPage });
+          });
+
+      })
+      .catch(error => 
+        console.log(error)
+      );
+  }
 }
 
 export function getSinglePoll(key) {
@@ -69,44 +78,5 @@ export function getSinglePoll(key) {
       dispatch({ type: 'GET_SINGLE_POLL_ERROR' });
       throw error;
     });
-  }
-}
-
-export function getPollsPagination(page = 1) {
-  return dispatch => {
-    dispatch({ type: 'GET_POLLS_PAGINATION_REQUEST' });
-    fetch(`${pollRef.toString()}.json?shallow=true`) // get number of polls in database
-      .then(res => res.json())
-      .then(data => {
-        console.log('start pagination');
-        const keys = Object.keys(data).sort();
-        const perPage = 4;
-        const numberOfPages = Math.ceil(keys.length / perPage);
-        let nextKey, query, promises = [];
-        for (let i = 0; i < numberOfPages; i++) {
-          nextKey = keys[i * perPage];
-          query = pollRef.orderByKey().limitToFirst(perPage).startAt(nextKey);
-          console.log('query', query.toString());
-          promises.push(query.once('value'));
-        }
-
-        Promise.all(promises)
-          .then(snaps => {
-            let pages = [];
-            snaps.forEach((snap, i) => {
-              const polls = snap.val();
-              let page = [];
-              for (let key in polls) {
-                let values = polls[key];
-                page.push({ key, ...polls[key] });
-              }
-              pages.push(page);
-            });
-            dispatch({ type: 'GET_POLLS_PAGINATION_SUCCESS', pages });
-          });
-
-      })
-      .catch(error => console.log(error));
-
   }
 }

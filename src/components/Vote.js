@@ -1,27 +1,21 @@
 import React, { Component } from 'react';
 
 class Vote extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    
     this.state = {
-      answers: [],
       selected: ''
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { answers } = nextProps.poll;
-    this.setState({
-      answers
-    });
-  }
-
   render() {
+    const { answers } = this.props.poll;
     return (
       <div>
         <form onSubmit={e => this.props.vote(e, this.state.selected)}>
           {
-            Object.keys(this.state.answers).map((answer, i) => {
+            Object.keys(answers).map((answer, i) => {
               return (
                 <div className="radio" key={i}>
                   <label><input type="radio" value={answer} onChange={e => this.setState({ selected: e.target.value })} checked={this.state.selected === answer} required />{answer}</label>

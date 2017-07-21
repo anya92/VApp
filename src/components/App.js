@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getUser, logOutUser, getAllPolls } from '../actions';
+import { getUser, logOutUser } from '../actions';
 import { firebaseApp, userRef } from '../firebase';
 
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -57,8 +57,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // this.props.getAllPolls();
-   
     // get user
     this.removeListener = firebaseApp.auth().onAuthStateChanged(user => {
       if (user) {
@@ -120,5 +118,5 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { getUser, logOutUser, getAllPolls })(App);
+export default connect(mapStateToProps, { getUser, logOutUser })(App);
 
