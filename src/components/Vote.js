@@ -11,7 +11,7 @@ class Vote extends Component {
 
   render() {
     const { answers } = this.props.poll;
-    return (
+    return ( // style vote 
       <div>
         <form onSubmit={e => this.props.vote(e, this.state.selected)}>
           {

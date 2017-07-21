@@ -42,10 +42,17 @@ class Profile extends Component {
     this.image.src = errorIcon;
   }
 
+  changeTab = (tab) => {
+    this.setState({
+      display: tab
+    });
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+  }
+
   render() {
     const { email, displayName, photoURL } = this.props.user;
-    // console.log(this.props.polls);
-    // const { userPolls } = this.props;
+
     return (
       <div className="text-center">
         <div className="header">
@@ -64,38 +71,57 @@ class Profile extends Component {
             </div>
           </div>
           <div className="tabs">
-            <div className="tab active" id="tab-1">
+            <div className="tab active" id="tab-1" onClick={() => this.changeTab('tab-1')}>
               <p>Moje Ankiety</p>
             </div>
-            <div className="tab" id="tab-2">
+            <div className="tab" id="tab-2" onClick={() => this.changeTab('tab-2')}>
               <p>Tab 2</p>
             </div>
-            <div className="tab" id="tab-3">
+            <div className="tab" id="tab-3" onClick={() => this.changeTab('tab-3')}>
               <p>Tab 3</p>
             </div>
-            <div className="tab" id="tab-4">
+            <div className="tab" id="tab-4" onClick={() => this.changeTab('tab-4')}>
               <p>Tab 4</p>
             </div>
           </div>
-          {
+        </div>
+        <div>
+          {/*
             this.props.polls.map((poll,i) => {
               return <div key={i}>{poll.title}</div> 
             })
+          */}
+          {
+            this.state.display === 'tab-1'
+            ? (
+                <div className="block">
+                  <h1>Moje głosowania</h1>
+                </div>
+              ) 
+            : <div></div>
           }
-        </div>
-        <div className="row">
+          {
+             this.state.display === 'tab-2'
+            ? (
+                <div className="block">
+                  <h1>Tab 2</h1>
+                </div>
+              ) 
+            : <div></div>
+          }
+          
         </div>
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  let { polls, user } = state;
-  const userPolls = polls.filter(poll => poll.author === user.uid);
-  return {
-    polls: userPolls
-  };
+function mapStateToProps(state) { // TODO get userPolls !!!
+  // let { polls, user } = state;
+  // const userPolls = polls.filter(poll => poll.author === user.uid);
+  // return {
+    // polls: userPolls
+  // };
 }
 
-export default connect(mapStateToProps, null)(Profile);
+export default Profile;

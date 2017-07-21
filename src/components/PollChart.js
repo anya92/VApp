@@ -74,7 +74,7 @@ class PollChart extends Component {
         }]
       }
     };
-    return (
+    return ( // TODO style chart, choose doughnut or bar chart
       <div>
         <div className="chart">
           Doughnut

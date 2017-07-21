@@ -45,13 +45,12 @@ class Home extends Component {
     let items = [];
 
     this.state.polls.map((poll, i) => 
-        items.push(
-          <div className="col-md-6 block" key={i} style={{minHeight: '200px', marginTop: '10px'}}>
- 
-            <Link to={`/glosowanie/${poll.key}`}>
+        items.push( // TODO style single poll card
+          <div className="col-sm-6 block" key={i} style={{minHeight: '200px', marginTop: '10px'}}>
+             <Link to={`/glosowanie/${poll.key}`}>
               <h1>{poll.title}</h1>
               { poll.photoURL && <img src={poll.photoURL} width="150" height="150" alt="poll" /> }
-              <p>{poll.numberOfVotes}</p>
+              <p>{poll.numberOfVotes} oddanych głosów</p>
             </Link>
           </div>
         )
@@ -59,7 +58,7 @@ class Home extends Component {
 
     return !this.state.pollsPerPage ? <div id="loading"></div> : (
       <div>
-        <h1>Home</h1>
+        <h1>Home</h1> {/* TODO change to app logo */}
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadItems.bind(this)}
