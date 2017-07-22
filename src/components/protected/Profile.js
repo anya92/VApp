@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 // import moment from 'moment';
 import { connect } from 'react-redux';
-// import { pollRef } from '../../firebase';
+import { getUserPolls } from '../../actions';
+import { pollRef } from '../../firebase';
 
 const editIcon = require('../../icons/edit.svg');
 const userIcon = require('../../icons/user.png');
 const errorIcon = require('../../icons/error.png');
+const trashIcon = require('../../icons/trash.svg');
+
 require('moment/locale/pl');
 // moment.locale('pl');
 
@@ -16,26 +19,19 @@ class Profile extends Component {
 
     this.state = {
       display: 'tab-1',
-      loading: false
+      userPolls: null
     }
   }
 
   componentDidMount() {
-    // const { user } = this.props;
-    // pollRef.on('value', snap => {
-    //   let userPolls = [];
-    //   snap.forEach(poll => {
-    //     const { title, answers, slug, author, created_At } = poll.val();
-    //     const pollKey = poll.key;
-    //     if (author === user.uid) {
-    //       userPolls.push({ title, answers, slug, author, created_At, pollKey });
-    //     }
-    //   });
-    //   this.props.getUserPolls(userPolls);
-    //   this.setState({
-    //     loading: false
-    //   });
-    // });
+    const { uid } = this.props.user;
+    this.props.getUserPolls(uid); // jeśli nie ma żadnych ??
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      userPolls: nextProps.userPolls
+    });
   }
 
   imageError = () => {
@@ -48,6 +44,16 @@ class Profile extends Component {
     });
     document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
     document.getElementById(tab).classList.add('active');
+  }
+
+  deletePoll = (key) => {
+    const confirmDelete = () => {
+      return window.confirm('Jesteś pewien?');
+    }
+    if (confirmDelete()) {
+      pollRef.child(key).remove();
+      console.log('deleted');
+    }
   }
 
   render() {
@@ -94,9 +100,29 @@ class Profile extends Component {
           {
             this.state.display === 'tab-1'
             ? (
-                <div className="block">
-                  <h1>Moje głosowania</h1>
-                </div>
+                <div>
+                  <div className="block">
+                    <h1>Moje głosowania</h1>
+                  </div>
+                  {
+                    !this.state.userPolls ? <div>Ładowanie...</div> : (
+                      this.state.userPolls.map(poll => {
+                        return (
+                          <div className="block col-sm-6" key={poll.key} style={{minHeight: '200px', marginTop: '10px'}}>
+                            <Link to={`/glosowanie/${poll.key}`}>
+                              <h1>{poll.title}</h1>
+                              <p>{poll.numberOfVotes} głosów</p>
+                            </Link>
+                            <div className="trash-icon">
+                              <img src={trashIcon} alt="trash-icon" onClick={() => this.deletePoll(poll.key)} />
+                            </div>
+                          </div>
+                        )
+                      })
+                    )
+                  }
+                </div>  
+                
               ) 
             : <div></div>
           }
@@ -117,11 +143,7 @@ class Profile extends Component {
 }
 
 function mapStateToProps(state) { // TODO get userPolls !!!
-  // let { polls, user } = state;
-  // const userPolls = polls.filter(poll => poll.author === user.uid);
-  // return {
-    // polls: userPolls
-  // };
+  return { userPolls: state.userPolls }
 }
 
-export default Profile;
+export default connect(mapStateToProps, { getUserPolls })(Profile);

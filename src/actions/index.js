@@ -80,3 +80,21 @@ export function getSinglePoll(key) {
     });
   }
 }
+
+
+export function getUserPolls(uid) {
+  return dispatch => {
+    dispatch({ type: 'GET_USER_POLLS_REQUEST' });
+    pollRef.on('value', snap => {
+    let userPolls = [];
+      snap.forEach(poll => {
+        if (poll.val().author === uid) {
+          let userPoll = poll.val();
+          userPoll.key = poll.key;
+          userPolls.push(userPoll);         
+        }
+      })
+      dispatch({ type: 'GET_USER_POLLS_SUCCESS', userPolls });
+    });
+  }
+}

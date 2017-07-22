@@ -4,7 +4,7 @@ _This project was bootstrapped with [Create React App](https://github.com/facebo
 
 1. As an authenticated user, I can keep my polls and come back later to access them.
 
-2. As an authenticated user, I can share my polls with my friends.
+2. As an authenticated user, I can share my polls with my friends. // TODO
 
 3. As an authenticated user, I can see the aggregate results of my polls.
 
@@ -16,4 +16,4 @@ _This project was bootstrapped with [Create React App](https://github.com/facebo
 
 7. As an unauthenticated or authenticated user, I can see the results of polls in chart form. (This could be implemented using Chart.js or Google Charts.)
 
-8.User Story: As an authenticated user, if I don't like the options on a poll, I can create a new option.
+8.User Story: As an authenticated user, if I don't like the options on a poll, I can create a new option. //TODO
