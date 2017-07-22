@@ -1,10 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { ShareButtons, generateShareIcon } from 'react-share';
+
 import { pollRef } from '../firebase';
 import { getSinglePoll } from '../actions';
 
 import PollChart from './PollChart';
 import Vote from './Vote';
+
+const {
+  FacebookShareButton,
+  GooglePlusShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} = ShareButtons;
+
+// const FacebookIcon = generateShareIcon('facebook');
+// const TwitterIcon = generateShareIcon('twitter');
+// const WhatsappIcon = generateShareIcon('whatsapp');
+// const GooglePlusIcon = generateShareIcon('google');
+
+const FacebookIcon = require('../icons/facebook.svg');
+const TwitterIcon = require('../icons/twitter.svg');
+const WhatsappIcon = require('../icons/whatsapp.svg');
+const GooglePlusIcon = require('../icons/google.svg');
 
 class SinglePoll extends Component {
   constructor() {
@@ -12,7 +31,8 @@ class SinglePoll extends Component {
 
     this.state = {
       alreadyVoted: false, //TODO localStorage ___done___
-      singlePoll: null
+      singlePoll: null,
+      isAuthor: false
     }
   }
 
@@ -31,7 +51,11 @@ class SinglePoll extends Component {
         alreadyVoted: true
       });
     }
-
+    if (this.props.user.email === nextProps.singlePoll.author.email) {
+      this.setState({
+        isAuthor: true
+      });
+    }
     this.setState({
       singlePoll: nextProps.singlePoll
     });
@@ -49,7 +73,8 @@ class SinglePoll extends Component {
         ...answers,
         [answer]: count
       },
-      numberOfVotes: newNumbersOfVotes
+      numberOfVotes: newNumbersOfVotes,
+      lastVoted_At: Date.now()
     });
 
     // store pollKey in localStorage
@@ -64,7 +89,30 @@ class SinglePoll extends Component {
   render() {
     return !this.state.singlePoll ? <div id="loading"></div> :  (
       <div>
-        <div className="block"><h1>{this.state.singlePoll.title}</h1><span>{this.state.author}</span></div>
+        <div className="block">
+          <h1>{this.state.singlePoll.title}</h1>
+          <span>{this.state.singlePoll.author.displayName}</span>
+        </div>
+        
+          {
+            this.state.isAuthor
+            ? <div className="share-buttons">
+                <FacebookShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL}>
+                  <img src={FacebookIcon} alt="Facebook"/>
+                </FacebookShareButton>
+                <TwitterShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL} hashtags={["VApp"]}>
+                  <img src={TwitterIcon} alt="Twitter"/>
+                </TwitterShareButton>  
+                <WhatsappShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL}>
+                  <img src={WhatsappIcon} alt="Whatsapp"/>
+                </WhatsappShareButton> 
+                <GooglePlusShareButton url={document.URL}>
+                  <img src={GooglePlusIcon} alt="GooglePlus"/>
+                </GooglePlusShareButton>
+             </div>
+            : <div></div> 
+          }
+       
         {
           this.state.alreadyVoted 
           ? <PollChart poll={this.state.singlePoll} />
@@ -78,6 +126,7 @@ class SinglePoll extends Component {
 
 function mapStateToProps(state, ownProps) {
   return { 
+    user: state.user,
     singlePoll: state.singlePoll
   };
 }

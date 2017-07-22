@@ -56,7 +56,6 @@ class PollChart extends Component {
 
   render() {
     const { labels, data, backgroundColor } = this.state;
-    console.log(backgroundColor);
     let data2 = {
       labels,
       datasets: [{
