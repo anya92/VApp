@@ -50,8 +50,10 @@ class Home extends Component {
           <div className="col-sm-6" key={i}>
             <Link to={`/glosowanie/${poll.key}`}>
               <div className="poll-card">
-                <p className="poll-card__title">{poll.title}</p>
-                { poll.photoURL && <img src={poll.photoURL} alt="poll" className="poll-card__photo" /> || <img src={statisticsIcon} alt="poll" className="poll-card__photo-graphic" /> }
+                <div className="poll-card__title">
+                  <p>{poll.title}</p>
+                </div>
+                { poll.photoURL && <img src={poll.photoURL} alt="poll" className="poll-card__photo" /> }
               </div>
             </Link>
           </div>
@@ -70,7 +72,7 @@ class Home extends Component {
           hasMore={this.state.hasMoreItems}
           loader={loader}
         >
-          <div>
+          <div className="row">
               {items}
           </div>
       </InfiniteScroll>

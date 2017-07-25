@@ -108,14 +108,21 @@ class Profile extends Component {
                     !this.state.userPolls ? <div>Ładowanie...</div> : (
                       this.state.userPolls.map(poll => {
                         return (
-                          <div className="block col-sm-6" key={poll.key} style={{minHeight: '200px', marginTop: '10px'}}>
+                          <div className="col-sm-6" key={poll.key} >
+                              <div className="poll-card">
                             <Link to={`/glosowanie/${poll.key}`}>
-                              <h1>{poll.title}</h1>
-                              <p>{poll.numberOfVotes} głosów</p>
-                            </Link>
-                            <div className="trash-icon">
-                              <img src={trashIcon} alt="trash-icon" onClick={() => this.deletePoll(poll.key)} />
-                            </div>
+                              <div className="poll-card__title">
+                                <p>{poll.title}</p>
+                              </div>
+                              { poll.photoURL && <img src={poll.photoURL} alt="poll" className="poll-card__photo" /> }
+                            </Link> 
+                          {/* TODO przenieśc do single trash */}
+                              <div className="trash-icon">
+                                <img src={trashIcon} alt="trash-icon" onClick={() => this.deletePoll(poll.key)} />
+                              </div>
+                              </div>  
+
+                            
                           </div>
                         )
                       })

@@ -107,7 +107,7 @@ class Add extends Component {
             <form onSubmit={e => this.addPoll(e)} className="form">
               
               <div className="form-group">
-                  <label htmlFor="photo">Zdjęcie (opcjonalnie)</label>
+                  <label htmlFor="photo">Zdjęcie</label>
                   <input type="text" name="photo" placeholder="Link do zdjęcia" className="form-control" onChange={e => this.setState({ photoURL: e.target.value })}/>
                 </div>
               <div className="form-group">

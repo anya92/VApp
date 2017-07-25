@@ -30,7 +30,7 @@
     border-radius: 40px;
   }
   .btn {
-    border-radius: 40px;
+    // border-radius: 40px;
     width: 100%;
     color: white;
     background-color: $main-color;
@@ -50,11 +50,14 @@
   .forgot-password {
     position: relative;
     padding: 5px 10px;
+    label {
+      margin-top: 10px;
+    }
     .close-btn {
       cursor: pointer;
       position: absolute;
-      right: 0px;
-      top: -10px;
+      right: 5px;
+      top: 0px;
     }
   }
 }
