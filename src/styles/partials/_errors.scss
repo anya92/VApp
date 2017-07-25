@@ -1,0 +1,20 @@
+.success-message {
+  color: $green;
+  text-align: center;
+  &:not(:empty) {
+    // border: 1px solid #eee;
+    background-color: #eee;
+    padding: 5px;  
+  }
+}
+
+.error-message {
+  color: $red;
+  text-align: center;
+  &:not(:empty) {
+    margin: 10px 0;
+    // border: 1px solid #eee;
+    background-color: #eee;
+    padding: 5px;  
+  }
+}

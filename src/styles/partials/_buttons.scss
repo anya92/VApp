@@ -1,39 +1,22 @@
 .btn {
-  border-radius: 100px !important;
-  margin: 0 auto;
+  border-radius: 0;
+  margin: 10px auto;
   margin-top: 10px;
+  background-color: $green !important;
+  color: white;
+  width: 100%;
   &:focus, &:active {
    outline: none !important;
 }
 }
-label {
-  font-size: 17px !important;
-  font-weight: bolder !important;
-}
-input.form-control {
-  border: none !important;
-  border-bottom: 1px solid #000 !important;
-  border-radius: 0px !important;
-  box-shadow: none !important;
-  background-color: transparent !important;
-  height: 40px !important;
-  font-size: 16px !important;
-  color: black !important;
-  padding: 0px !important;
-  &:focus {
-    // box-shadow: none;
-    border-bottom: 2px solid $main-color !important;
-  }
-}
 
-
-form {
-  padding: 10px 20px !important;
-}
 
 .share-buttons {
   div {
     display: inline-block;
+    &:focus {
+      outline: none;
+    }
   }
   img {
     display: inline-block;

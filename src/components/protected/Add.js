@@ -21,7 +21,7 @@ const AnswerInput = ({ id, answerChange, removeAnswerInput, value }) => {
       <span 
         className="input-group-addon"
         onClick={e => removeAnswerInput(id, e)}
-      ><p>-</p></span>
+      >&#x2715;</span>
     </div>
   );
 }
@@ -99,16 +99,16 @@ class Add extends Component {
         </div>
         <div>
           <div className="col-sm-6">
-            <div className="user-photo__edit">
+            <div className="poll-photo">
               {this.state.photoURL && <img src={this.state.photoURL || ''} alt="poll" className="img-responsive" />}
             </div>
           </div>
           <div className="col-sm-6 block">
-            <form onSubmit={e => this.addPoll(e)} className="add-poll-form">
+            <form onSubmit={e => this.addPoll(e)} className="form">
               
               <div className="form-group">
                   <label htmlFor="photo">Zdjęcie (opcjonalnie)</label>
-                  <input type="text" name="photo" placeholder="link do zdjęcia" className="form-control" onChange={e => this.setState({ photoURL: e.target.value })}/>
+                  <input type="text" name="photo" placeholder="Link do zdjęcia" className="form-control" onChange={e => this.setState({ photoURL: e.target.value })}/>
                 </div>
               <div className="form-group">
                 <label htmlFor="title">Pytanie</label>
@@ -128,8 +128,12 @@ class Add extends Component {
                     })
                   }
                 </div>
-                <div className="add-answer" onClick={e => this.addAnswerInput(e)}><p>+</p></div>
-                <button className="btn btn-lg" type="submit">Dodaj</button>          
+                <div className="add-answer" onClick={e => this.addAnswerInput(e)}>
+                  <span>+</span><p>Dodaj nową odpowiedź.</p>
+                </div>
+                <div className="text-center">
+                  <button className="btn btn-lg" type="submit">Dodaj</button>
+                </div>            
 
             </form>
 

@@ -1,0 +1,43 @@
+.poll-card {
+  background-color: white;
+  height: 300px;
+  margin: 10px;
+  overflow: hidden;
+  position: relative;
+  // border: 1px solid #eee;
+  .poll-card__title {
+    position: absolute;
+    margin-bottom: 0px;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+    color: black;
+    // text-shadow: 1px 1px black;
+    z-index: 2;
+    background-color: $yellow;
+    padding: 5px 10px;
+    font-size: 30px;
+  }
+  .poll-card__photo {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+    // opacity: 0.9;
+    &-graphic {
+      opacity: 0.5;
+      width: 50%;
+    }
+  }
+  .poll-card__votes {
+    position: absolute;
+    display: none;
+    bottom: 10px;
+    left: 10px;
+  }
+}
+
+.col-sm-6 {
+  padding-left: 0px;
+  padding-right: 0px; 
+}

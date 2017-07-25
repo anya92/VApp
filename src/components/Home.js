@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroller';
 import { getPollsPerPage } from '../actions';
+const statisticsIcon = require('../icons/graphic.png');
 
 class Home extends Component {
   constructor(props) {
@@ -46,11 +47,12 @@ class Home extends Component {
 
     this.state.polls.map((poll, i) => 
         items.push( // TODO style single poll card
-          <div className="col-sm-6 block" key={i} style={{minHeight: '200px', marginTop: '10px'}}>
-             <Link to={`/glosowanie/${poll.key}`}>
-              <h1>{poll.title}</h1>
-              { poll.photoURL && <img src={poll.photoURL} width="150" height="150" alt="poll" /> }
-              <p>{poll.numberOfVotes} oddanych głosów</p>
+          <div className="col-sm-6" key={i}>
+            <Link to={`/glosowanie/${poll.key}`}>
+              <div className="poll-card">
+                <p className="poll-card__title">{poll.title}</p>
+                { poll.photoURL && <img src={poll.photoURL} alt="poll" className="poll-card__photo" /> || <img src={statisticsIcon} alt="poll" className="poll-card__photo-graphic" /> }
+              </div>
             </Link>
           </div>
         )
@@ -58,14 +60,17 @@ class Home extends Component {
 
     return !this.state.pollsPerPage ? <div id="loading"></div> : (
       <div>
-        <h1>Home</h1> {/* TODO change to app logo */}
+        <div className="logo text-center">
+          <h1>VApp</h1> {/* TODO change to app logo */}
+
+        </div>
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadItems.bind(this)}
           hasMore={this.state.hasMoreItems}
           loader={loader}
         >
-          <div className="row">
+          <div>
               {items}
           </div>
       </InfiniteScroll>

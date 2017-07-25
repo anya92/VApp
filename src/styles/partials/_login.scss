@@ -22,10 +22,7 @@
       opacity: 0.6;
     }
   }
-  p.error {
-    color: red;
-    text-align: center;
-  }
+ 
   label {
     font-size: 16px;
   }
@@ -52,6 +49,7 @@
   }
   .forgot-password {
     position: relative;
+    padding: 5px 10px;
     .close-btn {
       cursor: pointer;
       position: absolute;

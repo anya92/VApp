@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ShareButtons, generateShareIcon } from 'react-share';
+import { ShareButtons } from 'react-share';
 
 import { pollRef } from '../firebase';
 import { getSinglePoll } from '../actions';
@@ -14,11 +14,6 @@ const {
   TwitterShareButton,
   WhatsappShareButton,
 } = ShareButtons;
-
-// const FacebookIcon = generateShareIcon('facebook');
-// const TwitterIcon = generateShareIcon('twitter');
-// const WhatsappIcon = generateShareIcon('whatsapp');
-// const GooglePlusIcon = generateShareIcon('google');
 
 const FacebookIcon = require('../icons/facebook.svg');
 const TwitterIcon = require('../icons/twitter.svg');
@@ -51,9 +46,13 @@ class SinglePoll extends Component {
         alreadyVoted: true
       });
     }
-    if (this.props.user.email === nextProps.singlePoll.author.email) {
+    if (nextProps.user && nextProps.user.email === nextProps.singlePoll.author.email) {
       this.setState({
         isAuthor: true
+      });
+    } else {
+      this.setState({
+        isAuthor: false
       });
     }
     this.setState({

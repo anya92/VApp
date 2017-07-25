@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import * as firebase from 'firebase';
 import { firebaseApp, userRef } from '../firebase';
 
 
@@ -62,8 +61,8 @@ class Login extends Component {
             <h4 className="not-active">Zarejestruj się</h4>
           </Link>
         </div>
-        <form>
-          <p className="error">{this.state.error.message}</p>
+        <form className="form">
+          <p className="error-message">{this.state.error.message}</p>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input 
@@ -112,7 +111,7 @@ class Login extends Component {
           ? (
               <div className="forgot-password">
                 <p className="close-btn" onClick={this.forgotPassword}>&#x2715;</p>
-                <form>
+                <form className="form">
                   <div className="form-group text-center">
                     <label htmlFor="forgot-email">Nie pamiętasz hasła? Podaj swój adres e-mail. <br/>Zostanie wysłany na niego link do zmiany hasła. </label>
                     <input 

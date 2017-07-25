@@ -55,8 +55,8 @@ class SignUp extends Component {
         </div>
         <div>
         </div>
-        <form>
-          <p className="error">{this.state.error.message}</p>
+        <form className="form">
+          <p className="error-message">{this.state.error.message}</p>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input

@@ -18,6 +18,7 @@ class EditProfile extends Component {
         message: ''
       },
       successEmail: '',
+      errorEmail: '',
       successPassword: '',
       errorPassword: ''
     };
@@ -74,8 +75,8 @@ class EditProfile extends Component {
         });
         this.setState({ successEmail: 'Email został zmieniony pomyślnie.' })
         // this.props.history.push('/profil');
-      }).catch(error => this.setState({ error }));
-    }).catch(error => this.setState({ error }));
+      }).catch(error => this.setState({ errorEmail: error }));
+    }).catch(error => this.setState({ errorEmail: error }));
   }
 
   changePassword = e => {
@@ -113,7 +114,7 @@ class EditProfile extends Component {
           </div>
         </div>
         <div className="user-info__edit col-md-8">
-          <form>
+          <form className="form">
             <fieldset>
               <legend>Dane użytkownika</legend>
               <div className="form-group">
@@ -137,10 +138,11 @@ class EditProfile extends Component {
           </form>
         </div>
         <div className="email__edit col-md-8 col-md-push-4">  
-          <form>
+          <form className="form">
             <fieldset>
               <legend>Zmiana adresu e-mail</legend>
               <p className="success-message">{this.state.successEmail}</p>
+              <p className="error-message">{this.state.errorEmail.message}</p>
               <div className="form-group">
                 <label htmlFor="email">Nowy adres e-mail</label>
                 <input type="email" className="form-control" placeholder="Email" name="email" value={this.state.email} onChange={e => this.setState({ email: e.target.value })} />
@@ -163,7 +165,7 @@ class EditProfile extends Component {
           </form>
         </div>
         <div className="password__edit col-md-8 col-md-push-4" >
-          <form>
+          <form className="form">
             <fieldset>
               <legend>Zmiana hasła</legend>
               <p>W celu zmiany hasła, podaj obecne hasło, a następnie wpisz nowe hasło.</p>

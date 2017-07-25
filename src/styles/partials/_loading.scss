@@ -8,9 +8,9 @@
   right: 0;
   bottom: 0;
   left: 0;
-  border: 3px solid darken($main-color, 10%);
+  border: 3px solid $main-color;
   border-radius: 100%;
-  animation: loading 1.2s ease infinite;
+  animation: loading 1.2s ease-in infinite;
 }
 
 @keyframes loading {
