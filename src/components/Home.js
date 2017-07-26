@@ -65,7 +65,7 @@ class Home extends Component {
                 </Link>
                 <div className="poll-card__info">
                   <p>{poll.numberOfVotes} oddanych głosów</p>
-                  <p>{moment(poll.created_At).endOf('day').fromNow()}</p>
+                  <p>{moment(poll.created_At).fromNow()}</p>
                   <Link to={`/glosowanie/${poll.key}`}>
                     <button className="btn btn-lg">Głosuj ➡</button>
                   </Link>

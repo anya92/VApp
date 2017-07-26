@@ -1,42 +1,48 @@
 .poll-card {
-  // background-color: #eee;
-  height: 350px;
+ 
+  height: 380px;
   margin: 20px 10px;
+  position: relative;
   overflow: hidden;
   // position: relative;
    @media all and (min-width: 768px) {
-    height: 350px;
+    height: 380px;
   }
   .poll-card__title {
     // position: absolute;
     // border: 2px solid black;
     // border-bottom: 1px solid #eee;
 
-    margin-bottom: 0px;
-    width: 100%;
+    // margin-bottom: 0px;
+    // width: 100%;
     height: 80px;
-    bottom: 0px;
-    left: 0px;
+    max-width: calc(100% - 30px);
+    // bottom: 0px;
+    // left: 0px;
     display: flex;
     align-items: center;
     p {
       color: $green;
       font-size: 22px;
-      display: block;
+      // display: block;
       // line-height: 30px;
       // white-space: nowrap;
        // text-overflow: ellipsis;
       // vertical-align:middle;
-
     }
-    z-index: 2;
+a:hover {
+      text-decoration: none;
+    }
+
+    // z-index: 2;
     // background-color: rgba(black, 0.7);
-    padding: 5px 10px;
+    padding: 10px 10px;
   }
   .poll-card__photo {
     // border: 2px solid black;
+     background-color: #eee;
     position: relative;
-    height: 230px;
+    height: 255px;
     img {
       width: 100%;
       height: 100%;
@@ -46,7 +52,7 @@
   }
   .poll-card__info {
     // border-top: 1px solid #eee;
-    height: 40px;
+    height: 45px;
     display: flex;
     justify-content: space-around;
     align-items: baseline;
@@ -95,8 +101,18 @@
     font-size: 25px;
     font-weight: bold;
     padding: auto;
-    text-shadow: 1px 1px 2px grey;
+    text-shadow: 1px 1px  grey;
     span {
       font-size: 80px;
     }
+}
+
+.delete-poll {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  color: black;
+  font-size: 20px;
 }

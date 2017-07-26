@@ -169,6 +169,8 @@ class EditProfile extends Component {
             <fieldset>
               <legend>Zmiana hasła</legend>
               <p>W celu zmiany hasła, podaj obecne hasło, a następnie wpisz nowe hasło.</p>
+              <p className="success-message">{this.state.successPassword}</p>
+              <p className="error-message">{this.state.errorPassword}</p>
               <div className="form-group">
                 <label htmlFor="old-password">Obecne hasło</label>
                 <input type="password" className="form-control" name="old-password" placeholder="Obecne hasło" onChange={e => this.setState({ providedPassword: e.target.value })} />
@@ -177,8 +179,6 @@ class EditProfile extends Component {
                 <label htmlFor="new-password">Nowe hasło</label>
                 <input type="password" className="form-control" name="new-password" placeholder="Nowe hasło" onChange={e => this.setState({ newPassword: e.target.value })} />
               </div>
-              <p className="success-message">{this.state.successPassword}</p>
-              <p className="error-message">{this.state.errorPassword}</p>
               <div className="text-center">
                 <button 
                   className="btn btn-lg" 

@@ -85,6 +85,8 @@ class SinglePoll extends Component {
     });
   }
 
+   
+
   render() {
     return !this.state.singlePoll ? <div id="loading"></div> :  (
       <div>
@@ -111,7 +113,7 @@ class SinglePoll extends Component {
              </div>
             : <div></div> 
           }
-       
+         
         {
           this.state.alreadyVoted 
           ? <PollChart poll={this.state.singlePoll} />

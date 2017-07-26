@@ -46,13 +46,12 @@ class Profile extends Component {
     document.getElementById(tab).classList.add('active');
   }
 
-  deletePoll = (key) => {
+  deletePoll = (key, title) => {
     const confirmDelete = () => {
-      return window.confirm('Jesteś pewien?');
+      return window.confirm(`Na pewno chcesz usunąć głosowanie "${title}"?`);
     }
     if (confirmDelete()) {
       pollRef.child(key).remove();
-      console.log('deleted');
     }
   }
 
@@ -60,8 +59,8 @@ class Profile extends Component {
     const { email, displayName, photoURL } = this.props.user;
 
     return (
-      <div className="text-center">
-        <div className="header">
+      <div className="">
+        <div className="header text-center">
           <div className="edit-icon">
             <Link to="/ustawienia">
               <img src={editIcon} alt="edit-icon"/>
@@ -101,11 +100,11 @@ class Profile extends Component {
             this.state.display === 'tab-1'
             ? (
                 <div>
-                  <div className="block">
+                  {/*<div className="block">
                     <h1>Moje głosowania</h1>
-                  </div>
+                  </div>*/}
                   {
-                    !this.state.userPolls ? <div>Ładowanie...</div> : (
+                    !this.state.userPolls ? <div className="text-center">Ładowanie...</div> : (
                       this.state.userPolls.map(poll => {
                         return (
                           <div className="col-sm-6" key={poll.key}>
@@ -114,6 +113,7 @@ class Profile extends Component {
                                 <Link to={`/glosowanie/${poll.key}`}>
                                   <p>{poll.title}</p>
                                 </Link>
+                                <a className="delete-poll" onClick={() => this.deletePoll(poll.key, poll.title)}>&#x2715;</a>
                               </div>
                               <Link to={`/glosowanie/${poll.key}`}>
                                 <div className="poll-card__photo">
@@ -122,7 +122,7 @@ class Profile extends Component {
                               </Link>
                               <div className="poll-card__info">
                                 <p>{poll.numberOfVotes} oddanych głosów</p>
-                                <p>{moment(poll.created_At).endOf('day').fromNow()}</p>
+                                <p>{moment(poll.created_At).fromNow()}</p>
                                 <Link to={`/glosowanie/${poll.key}`}>
                                   <button className="btn btn-lg">Głosuj ➡</button>
                                 </Link>

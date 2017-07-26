@@ -3,15 +3,17 @@
   // height: 60px;
   // font-weight: bolder;
   font-size: 17px;
-  border-bottom: none;
     user-select:none;
   border-bottom: 1px solid #eee;
+  padding-top: 10px !important; padding-bottom: 10px !important;
   .navbar-brand {
     color: $main-color;
-    font-size: 25px;
+    font-size: 30px;
     font-weight: bold;
-    padding: auto;
-    text-shadow: 1px 1px 2px grey;
+    padding: 12px;
+    // padding-top:22px !important; padding-bottom:22px !important;
+    // padding: auto;
+    // text-shadow: 1px 1px 2px grey;
     &:focus, &:hover {
       color: $main-color;
       cursor: pointer;
@@ -20,8 +22,9 @@
   a {
     // font-variant: small-caps;
   }
-  .navbar-nav>li>a.special {
-    background-color: mistyrose;
+  .navbar-nav>li.special>a {
+    background-color: $main-color;
+    color: white;
   }
   .dropdown-menu>li.active>a {
     background-color: transparent !important;
@@ -30,3 +33,6 @@
     // border-bottom: 1px solid $main-color;
   }
 }
+
+// .navbar-nav > li > a {padding-top:25px !important; padding-bottom:25px !important;}
+// .navbar {min-height: 50px !important}

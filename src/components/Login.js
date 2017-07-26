@@ -114,6 +114,8 @@ class Login extends Component {
                 <form className="form">
                   <div className="form-group text-center">
                     <label htmlFor="forgot-email">Nie pamiętasz hasła? Podaj swój adres e-mail. <br/>Zostanie wysłany na niego link do zmiany hasła. </label>
+                  <p className="success-message">{this.state.resetSuccess}</p>
+                  <p className="error-message">{this.state.resetError}</p>
                     <input 
                       type="email" 
                       name="forgot-email" 
@@ -121,8 +123,6 @@ class Login extends Component {
                       onChange={e => this.setState({ forgotEmail: e.target.value })}
                     />
                   </div>
-                  <p className="success-message">{this.state.resetSuccess}</p>
-                  <p className="error-message">{this.state.resetError}</p>
                 </form>
                 <div className="text-center">
                   <button 

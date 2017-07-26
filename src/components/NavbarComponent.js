@@ -47,7 +47,7 @@ const NavbarComponent = (props) => {
                       <MenuItem divider />
                       <MenuItem eventKey={1.4} onClick={() => signOut()}>Wyloguj się</MenuItem>
                     </NavDropdown>
-                    <LinkContainer to="/dodaj"  className="special">
+                    <LinkContainer to="/dodaj" className="special">
                       <NavItem eventKey={2}>Dodaj</NavItem>
                     </LinkContainer>
                   </Nav>
@@ -57,7 +57,7 @@ const NavbarComponent = (props) => {
                     <LinkContainer to="/login">
                       <NavItem eventKey={1}>Zaloguj się</NavItem>
                     </LinkContainer>
-                    <LinkContainer to="/signup">
+                    <LinkContainer to="/signup" className="special">
                       <NavItem eventKey={1}>Zarejestruj się</NavItem>
                     </LinkContainer>
                   </Nav>
