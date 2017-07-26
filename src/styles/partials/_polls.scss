@@ -1,23 +1,26 @@
 .poll-card {
-  background-color: #eee;
-  height: 200px;
+  // background-color: #eee;
+  height: 350px;
   margin: 20px 10px;
   overflow: hidden;
-  position: relative;
+  // position: relative;
    @media all and (min-width: 768px) {
-    height: 250px;
+    height: 350px;
   }
   .poll-card__title {
-    position: absolute;
+    // position: absolute;
+    // border: 2px solid black;
+    // border-bottom: 1px solid #eee;
+
     margin-bottom: 0px;
     width: 100%;
-    min-height: 30%;
+    height: 80px;
     bottom: 0px;
     left: 0px;
     display: flex;
     align-items: center;
     p {
-      color: white;
+      color: $green;
       font-size: 22px;
       display: block;
       // line-height: 30px;
@@ -27,24 +30,43 @@
 
     }
     z-index: 2;
-    background-color: rgba(black, 0.7);
+    // background-color: rgba(black, 0.7);
     padding: 5px 10px;
   }
   .poll-card__photo {
-    width: 100%;
-    height: 100%;
-    // position: absolute;
-    object-fit: cover;
+    // border: 2px solid black;
+    position: relative;
+    height: 230px;
+    img {
+      width: 100%;
+      height: 100%;
+      // position: absolute;
+      object-fit: cover;
+    }
   }
-  .poll-card__votes {
-    position: absolute;
-    display: none;
-    bottom: 10px;
-    left: 10px;
+  .poll-card__info {
+    // border-top: 1px solid #eee;
+    height: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    p {
+      display: inline-block;
+      font-size: 14px;
+      // margin: 8px;
+      // vertical-align:middle;
+
+    }
+    button {
+      // max-width: 30%;
+      font-size: 14px;
+      padding: 3px;
+      height: 24px;
+    }
   }
   transition: transform 0.6s ease;
   &:hover {
-    transform: scale(1.05);
+    // transform: scale(1.05);
   }
 }
 
@@ -66,4 +88,15 @@
   &:hover {
     transform: scale(1.5);
   }
+}
+
+.logo {
+  color: $main-color;
+    font-size: 25px;
+    font-weight: bold;
+    padding: auto;
+    text-shadow: 1px 1px 2px grey;
+    span {
+      font-size: 80px;
+    }
 }

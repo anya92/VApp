@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import moment from 'moment';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { getUserPolls } from '../../actions';
 import { pollRef } from '../../firebase';
@@ -11,7 +11,7 @@ const errorIcon = require('../../icons/error.png');
 const trashIcon = require('../../icons/trash.svg');
 
 require('moment/locale/pl');
-// moment.locale('pl');
+moment.locale('pl');
 
 class Profile extends Component {
   constructor(props) {
@@ -108,22 +108,27 @@ class Profile extends Component {
                     !this.state.userPolls ? <div>Ładowanie...</div> : (
                       this.state.userPolls.map(poll => {
                         return (
-                          <div className="col-sm-6" key={poll.key} >
-                              <div className="poll-card">
-                            <Link to={`/glosowanie/${poll.key}`}>
+                          <div className="col-sm-6" key={poll.key}>
+                            <div className="poll-card block">
                               <div className="poll-card__title">
-                                <p>{poll.title}</p>
+                                <Link to={`/glosowanie/${poll.key}`}>
+                                  <p>{poll.title}</p>
+                                </Link>
                               </div>
-                              { poll.photoURL && <img src={poll.photoURL} alt="poll" className="poll-card__photo" /> }
-                            </Link> 
-                          {/* TODO przenieśc do single trash */}
-                              <div className="trash-icon">
-                                <img src={trashIcon} alt="trash-icon" onClick={() => this.deletePoll(poll.key)} />
-                              </div>
+                              <Link to={`/glosowanie/${poll.key}`}>
+                                <div className="poll-card__photo">
+                                  { poll.photoURL && <img src={poll.photoURL} alt="poll" /> }
+                                </div>
+                              </Link>
+                              <div className="poll-card__info">
+                                <p>{poll.numberOfVotes} oddanych głosów</p>
+                                <p>{moment(poll.created_At).endOf('day').fromNow()}</p>
+                                <Link to={`/glosowanie/${poll.key}`}>
+                                  <button className="btn btn-lg">Głosuj ➡</button>
+                                </Link>
                               </div>  
-
-                            
-                          </div>
+                            </div>
+                        </div>
                         )
                       })
                     )
@@ -152,5 +157,8 @@ class Profile extends Component {
 function mapStateToProps(state) { // TODO get userPolls !!!
   return { userPolls: state.userPolls }
 }
+                                  // <div className="trash-icon">
+                                    // <img src={trashIcon} alt="trash-icon" onClick={() => this.deletePoll(poll.key)} />
+                                  // </div>
 
 export default connect(mapStateToProps, { getUserPolls })(Profile);

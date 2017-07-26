@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroller';
+import moment from 'moment';
 import { getPollsPerPage } from '../actions';
 const statisticsIcon = require('../icons/graphic.png');
+
+require('moment/locale/pl');
+moment.locale('pl');
 
 class Home extends Component {
   constructor(props) {
@@ -48,14 +52,25 @@ class Home extends Component {
     this.state.polls.map((poll, i) => 
         items.push( // TODO style single poll card
           <div className="col-sm-6" key={i}>
-            <Link to={`/glosowanie/${poll.key}`}>
-              <div className="poll-card">
+              <div className="poll-card block">
                 <div className="poll-card__title">
-                  <p>{poll.title}</p>
+                  <Link to={`/glosowanie/${poll.key}`}>
+                    <p>{poll.title}</p>
+                  </Link>
                 </div>
-                { poll.photoURL && <img src={poll.photoURL} alt="poll" className="poll-card__photo" /> }
+                <Link to={`/glosowanie/${poll.key}`}>
+                  <div className="poll-card__photo">
+                    { poll.photoURL && <img src={poll.photoURL} alt="poll" /> }
+                  </div>
+                </Link>
+                <div className="poll-card__info">
+                  <p>{poll.numberOfVotes} oddanych głosów</p>
+                  <p>{moment(poll.created_At).endOf('day').fromNow()}</p>
+                  <Link to={`/glosowanie/${poll.key}`}>
+                    <button className="btn btn-lg">Głosuj ➡</button>
+                  </Link>
+                </div>  
               </div>
-            </Link>
           </div>
         )
     );
@@ -63,7 +78,7 @@ class Home extends Component {
     return !this.state.pollsPerPage ? <div id="loading"></div> : (
       <div>
         <div className="logo text-center">
-          <h1>VApp</h1> {/* TODO change to app logo */}
+          <h1><span>V</span>App</h1> {/* TODO change to app logo */}
 
         </div>
         <InfiniteScroll

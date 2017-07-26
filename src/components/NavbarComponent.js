@@ -28,16 +28,6 @@ const NavbarComponent = (props) => {
             <LinkContainer to="/about">
               <NavItem eventKey={2}>O projekcie</NavItem>
             </LinkContainer>
-            {/*<NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-              <MenuItem eventKey={3.1}>Action</MenuItem>
-              <MenuItem eventKey={3.2}>Another action</MenuItem>
-              <MenuItem eventKey={3.3}>Something else here</MenuItem>
-              <MenuItem divider />
-              <LinkContainer to="/somewhere">
-                <MenuItem eventKey={3.3}>Separated link</MenuItem>
-                
-              </LinkContainer>
-            </NavDropdown>*/}
           </Nav>
           
             {

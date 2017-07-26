@@ -93,7 +93,9 @@ export function getUserPolls(uid) {
           userPoll.key = poll.key;
           userPolls.push(userPoll);         
         }
-      })
+      });
+      // sort data by time
+      userPolls.sort((a, b) => b.created_At - a.created_At);
       dispatch({ type: 'GET_USER_POLLS_SUCCESS', userPolls });
     });
   }
