@@ -15,6 +15,7 @@ import Home from './Home';
 import SinglePoll from './SinglePoll';
 import Login from './Login';
 import SignUp from './SignUp';
+import Popular from './Popular';
 import NotFound from './NotFound';
 
 import EditProfile from './protected/EditProfile';
@@ -94,6 +95,7 @@ class App extends Component {
               <Switch>
                 <Route exact path='/' render={() => (<Home />)} />
                 <Route exact path='/glosowanie/:key' component={SinglePoll} />
+                <Route path='/top' component={Popular} />
                 <PublicRoute auth={this.state.auth} path='/login' component={Login} user={this.props.user} />
                 <PublicRoute auth={this.state.auth} path='/signup' component={SignUp} />
                 <PrivateRoute auth={this.state.auth} exact path='/profil' component={Profile} user={this.props.user} />

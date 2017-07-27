@@ -19,8 +19,23 @@ export function logOutUser() {
   return action;
 }
 
+export function getAllPolls() {
+  return dispatch => {
+    pollRef.on('value', snaps => {
+      let polls = [];
+      snaps.forEach(snap => {
+        let { key } = snap;
+        polls.push({ ...snap.val(), key });
+      });
+      // polls.sort((a, b) => b.created_At - a.created_At);
+      polls.reverse();
+      dispatch({ type: 'GET_ALL_POLLS', polls});
 
-export function getPollsPerPage(page = 1) {
+    })
+  }
+}
+
+export function getPollsPerPage(page = 1) { // TODO remove
   return dispatch => {
     dispatch({ type: 'GET_POLLS_PER_PAGE_REQUEST' });
     fetch(`${pollRef.toString()}.json?shallow=true`) // get number of polls in database
@@ -97,6 +112,22 @@ export function getUserPolls(uid) {
       // sort data by time
       userPolls.sort((a, b) => b.created_At - a.created_At);
       dispatch({ type: 'GET_USER_POLLS_SUCCESS', userPolls });
+    });
+  }
+}
+
+export function getPopularPolls() {
+  return dispatch => {
+    dispatch({ type: 'GET_POPULAR_POLLS_REQUEST' });
+    pollRef.orderByChild('numberOfVotes').limitToLast(10).on('value', snaps => {
+      let popularPolls = [];
+      snaps.forEach(snap => {
+        let { key } = snap;
+        popularPolls.push({ ...snap.val(), key });
+      });
+      popularPolls.reverse();
+      dispatch({ type: 'GET_POPULAR_POLLS_SUCCESS', popularPolls });
+      // console.log('popularPolls', popularPolls);
     });
   }
 }

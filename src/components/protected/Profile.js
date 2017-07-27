@@ -59,7 +59,7 @@ class Profile extends Component {
     const { email, displayName, photoURL } = this.props.user;
 
     return (
-      <div className="">
+      <div className="row">
         <div className="header text-center">
           <div className="edit-icon">
             <Link to="/ustawienia">
@@ -99,7 +99,7 @@ class Profile extends Component {
           {
             this.state.display === 'tab-1'
             ? (
-                <div>
+                <div className="row">
                   {/*<div className="block">
                     <h1>Moje głosowania</h1>
                   </div>*/}

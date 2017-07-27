@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroller';
 import moment from 'moment';
-import { getPollsPerPage } from '../actions';
+import { getPollsPerPage, getAllPolls } from '../actions';
 const statisticsIcon = require('../icons/graphic.png');
 
 require('moment/locale/pl');
@@ -14,42 +14,61 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      pollsPerPage: null,
-      polls: [],
+      pollsPerPage: [],
+      polls: null,
       hasMoreItems: true
     }
   }
 
   componentDidMount() {
-    this.props.getPollsPerPage();
+    this.props.getAllPolls();
+    // this.props.getPollsPerPage();
   } 
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ pollsPerPage: nextProps.pollsPerPage });
+    this.setState({ polls: nextProps.polls });
   }
 
   loadItems(page) {
-    const { pollsPerPage } = this.props;
-    let { polls } = this.state;
-    pollsPerPage[page - 1].forEach(page => {
-      polls.push(page);
+    const perPage = 6;
+
+    let { pollsPerPage } = this.state;
+    this.props.polls.slice(perPage * (page - 1), perPage * page).forEach(poll => {
+      pollsPerPage.push(poll);
     });
-    if (!pollsPerPage[page]) { // there will be no polls
+
+    if(!this.props.polls[perPage * (page - 1)]) {
       this.setState({
         hasMoreItems: false
       });
     }
     this.setState({
-      polls
+      pollsPerPage
     });
   }
+
+  // loadItems(page) {
+  //   const { pollsPerPage } = this.props;
+  //   let { polls } = this.state;
+  //   pollsPerPage[page - 1].forEach(page => {
+  //     polls.push(page);
+  //   });
+  //   if (!pollsPerPage[page]) { // there will be no polls
+  //     this.setState({
+  //       hasMoreItems: false
+  //     });
+  //   }
+  //   this.setState({
+  //     polls
+  //   });
+  // }
 
   render() {
     const loader = <div className="loader">Ładowanie...</div>;
 
     let items = [];
 
-    this.state.polls.map((poll, i) => 
+    this.state.pollsPerPage.map((poll, i) => 
         items.push( // TODO style single poll card
           <div className="col-sm-6" key={i}>
               <div className="poll-card block">
@@ -75,12 +94,12 @@ class Home extends Component {
         )
     );
 
-    return !this.state.pollsPerPage ? <div id="loading"></div> : (
+    return !this.state.polls ? <div id="loading"></div> : (
       <div>
-        <div className="logo text-center">
-          <h1><span>V</span>App</h1> {/* TODO change to app logo */}
+        {/*<div className="logo text-center">
+          <h1><span>VA</span>pp</h1>  TODO change to app logo 
 
-        </div>
+        </div>*/}
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadItems.bind(this)}
@@ -97,8 +116,8 @@ class Home extends Component {
 }
 
 function mapStateToProps(state) {
-  return { pollsPerPage: state.pollsPerPage };
+  return { polls: state.polls };
 }
 
-export default connect(mapStateToProps, { getPollsPerPage })(Home);
+export default connect(mapStateToProps, { getPollsPerPage, getAllPolls })(Home);
 
