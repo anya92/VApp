@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ShareButtons } from 'react-share';
-
+import MotionMenu from 'react-motion-menu';
 import { pollRef } from '../firebase';
 import { getSinglePoll } from '../actions';
 
@@ -17,8 +17,9 @@ const {
 
 const FacebookIcon = require('../icons/facebook.svg');
 const TwitterIcon = require('../icons/twitter.svg');
-const WhatsappIcon = require('../icons/whatsapp.svg');
-const GooglePlusIcon = require('../icons/google.svg');
+const WhatsappIcon = require('../icons/whatsapp.png');
+const GooglePlusIcon = require('../icons/google-plus.svg');
+const shareIcon = require('../icons/share.svg');
 
 class SinglePoll extends Component {
   constructor() {
@@ -85,6 +86,23 @@ class SinglePoll extends Component {
     });
   }
 
+  shareButton = () => {
+    const share = document.querySelector('.share');
+    const icons = document.querySelectorAll('.social');
+    share.classList.toggle('turn');
+      icons.forEach(icon => {
+        let { classList } = icon;
+        if (classList.contains('hide-icon')) {
+          classList.remove('hide-icon');
+          classList.add('show-icon');
+        } else if (classList.contains('show-icon')) {
+          classList.remove('show-icon');
+          classList.add('hide-icon');
+        } else {
+          classList.add('show-icon');
+        }
+      }); 
+  }
    
 
   render() {
@@ -93,32 +111,32 @@ class SinglePoll extends Component {
         <div className="block">
           <h1>{this.state.singlePoll.title}</h1>
           <span>{this.state.singlePoll.author.displayName}</span>
-        </div>
-        
-          {
-            this.state.isAuthor
-            ? <div className="share-buttons">
-                <FacebookShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL}>
-                  <img src={FacebookIcon} alt="Facebook"/>
-                </FacebookShareButton>
-                <TwitterShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL} hashtags={["VApp"]}>
-                  <img src={TwitterIcon} alt="Twitter"/>
-                </TwitterShareButton>  
-                <WhatsappShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL}>
-                  <img src={WhatsappIcon} alt="Whatsapp"/>
-                </WhatsappShareButton> 
-                <GooglePlusShareButton url={document.URL}>
-                  <img src={GooglePlusIcon} alt="GooglePlus"/>
-                </GooglePlusShareButton>
-             </div>
-            : <div></div> 
-          }
-         
+                
         {
           this.state.alreadyVoted 
           ? <PollChart poll={this.state.singlePoll} />
           : <Vote poll={this.state.singlePoll} vote={this.vote} />
         }
+        {
+          this.state.isAuthor
+          ? <div className="share-buttons">
+              <img src={shareIcon} alt="share" className="share" onClick={() => this.shareButton()}/>
+              <FacebookShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL}>
+                <img src={FacebookIcon} alt="Facebook" className="social facebook"  />
+              </FacebookShareButton>
+              <TwitterShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL} hashtags={["VApp"]}>
+                <img src={TwitterIcon} alt="Twitter" className="social twitter" />
+              </TwitterShareButton>  
+              <WhatsappShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL}>
+                <img src={WhatsappIcon} alt="Whatsapp" className="social whatsapp" />
+              </WhatsappShareButton> 
+              <GooglePlusShareButton url={document.URL}>
+                <img src={GooglePlusIcon} alt="GooglePlus" className="social google-plus" />
+              </GooglePlusShareButton>
+           </div>
+          : <div></div> 
+        }
+        </div>
         
       </div>
     );

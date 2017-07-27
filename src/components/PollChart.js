@@ -9,7 +9,8 @@ class PollChart extends Component {
     this.state = {
       labels: [],
       data: [],
-      backgroundColor: []
+      backgroundColor: [],
+      display: 'doughnut'
     }
   }
 
@@ -47,11 +48,17 @@ class PollChart extends Component {
     });
   }
 
-   generateColor = () => {
+  generateColor = () => {
     const reds = Math.floor(Math.random() * 256);
     const greens = Math.floor(Math.random() * 256);
     const blues = Math.floor(Math.random() * 256);
     return `rgba(${reds},${greens},${blues}, 0.3)`;
+  }
+
+  changeChart = (chart) => {
+    this.setState({
+      display: chart
+    });
   }
 
   render() {
@@ -59,30 +66,62 @@ class PollChart extends Component {
     let data2 = {
       labels,
       datasets: [{
-        label: '# of votes',
+        label: ' głosów',
         data,
         backgroundColor
       }]
     };
-    let options = {
+    let doughnutOptions = {
+      legend: {
+        display: true,
+        position: 'right',
+        labels: {
+          boxWidth: 50,
+          fontSize: 16,
+          padding: 15
+        }
+      }
+    }
+    let barOptions = {
+      legend: {
+        display: true,
+        position: 'right',
+        labels: {
+          fontColor: 'rgb(255, 99, 132)'
+        }
+      },
       scales: {
         yAxes: [{
-            ticks: {
-                beginAtZero: true
-            }
+          ticks: {
+            beginAtZero: true
+          }
         }]
       }
     };
-    return ( // TODO style chart, choose doughnut or bar chart
+    return ( // TODO style chart, choose doughnut or bar chart // icons!!!!
       <div>
-        <div className="chart">
-          Doughnut
-          <Doughnut data={data2} />
+        <div className="choose-chart">
+          <a onClick={() => this.changeChart('doughnut')}>Kołowy</a>
+          <a onClick={() => this.changeChart('bar')}>Kulumnowy</a>
+          <a onClick={() => this.changeChart('info')}>Informacje</a>
         </div>
-        <div className="chart">
-          Bar
-          <Bar data={data2} options={options}/>
-        </div>
+        {
+          this.state.display === 'doughnut'
+          ? (
+              <div className="chart">
+                <Doughnut data={data2} options={doughnutOptions}/>
+              </div>
+            )
+          : this.state.display === 'bar'
+          ? (
+              <div className="chart">
+                <Bar data={data2} options={barOptions}/>
+              </div>
+            )
+          : <div>Info</div>
+        }
+        
+        
       </div>
     );
   }
