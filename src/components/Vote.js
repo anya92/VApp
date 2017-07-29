@@ -41,7 +41,7 @@ class Vote extends Component {
                   <input type="text" placeholder="Dodaj nową odpowiedź" value={this.state.newAnswer === this.state.selected ? this.state.selected : ''} onChange={e => this.newAnswer(e)} />
                 </div>
               )
-            : <div></div>
+            : <div><p className="message">Zaloguj się, by dodać własną odpowiedź.</p></div>
           } 
           
           <button className="btn btn-lg" type="submit">Zagłosuj</button>

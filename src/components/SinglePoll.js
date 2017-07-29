@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ShareButtons } from 'react-share';
 import MotionMenu from 'react-motion-menu';
+import moment from 'moment';
 import { pollRef } from '../firebase';
 import { getSinglePoll } from '../actions';
 
 import PollChart from './PollChart';
 import Vote from './Vote';
+
+require('moment/locale/pl');
+moment.locale('pl');
+
 
 const {
   FacebookShareButton,
@@ -105,28 +110,34 @@ class SinglePoll extends Component {
    
 
   render() {
-    return !this.state.singlePoll ? <div id="loading"></div> :  (
+    const { singlePoll, isAuthor } = this.state;
+    return !singlePoll ? <div id="loading"></div> :  (
       <div>
-        <div className="block">
-          <h1>{this.state.singlePoll.title}</h1>
-          <span>{this.state.singlePoll.author.displayName}</span>
-                
+        <div className="single-poll block">
+          <div className="single-poll__author">
+            { singlePoll.author.photoURL && <img src={singlePoll.author.photoURL} alt="author"/> }
+            <p>{singlePoll.author.displayName || singlePoll.author.email}</p>
+            <p>{moment(singlePoll.created_At).fromNow()}</p>
+          </div> <hr/>
+          <div className="single-poll__title">
+            <p>{singlePoll.title}</p>
+          </div> <hr/>
         {
           this.state.alreadyVoted 
-          ? <PollChart poll={this.state.singlePoll} />
-          : <Vote poll={this.state.singlePoll} vote={this.vote} user={this.props.user }/>
+          ? <PollChart poll={singlePoll} />
+          : <Vote poll={singlePoll} vote={this.vote} user={this.props.user }/>
         }
         {
-          this.state.isAuthor
+          isAuthor
           ? <div className="share-buttons">
               <img src={shareIcon} alt="share" className="share" onClick={() => this.shareButton()}/>
-              <FacebookShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL}>
+              <FacebookShareButton title={`Oddaj głos w moim głosowaniu! "${singlePoll.title}"`} url={document.URL}>
                 <img src={FacebookIcon} alt="Facebook" className="social facebook"  />
               </FacebookShareButton>
-              <TwitterShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL} hashtags={["VApp"]}>
+              <TwitterShareButton title={`Oddaj głos w moim głosowaniu! "${singlePoll.title}"`} url={document.URL} hashtags={["VApp"]}>
                 <img src={TwitterIcon} alt="Twitter" className="social twitter" />
               </TwitterShareButton>  
-              <WhatsappShareButton title={`Oddaj głos w moim głosowaniu! "${this.state.singlePoll.title}"`} url={document.URL}>
+              <WhatsappShareButton title={`Oddaj głos w moim głosowaniu! "${singlePoll.title}"`} url={document.URL}>
                 <img src={WhatsappIcon} alt="Whatsapp" className="social whatsapp" />
               </WhatsappShareButton> 
               <GooglePlusShareButton url={document.URL}>

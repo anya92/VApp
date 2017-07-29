@@ -116,3 +116,40 @@ a:hover {
   color: black;
   font-size: 20px;
 }
+
+.single-poll {
+  padding: 20px;
+  hr {
+    border: none;
+    border-top: medium double #eee;
+  }
+  &__title {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+  }
+  &__author {
+    // background-color: #eee;
+    padding: 5px;
+    margin-bottom: 10px;
+    @media all and (min-width: 768px) {
+      width: 50%;
+    }
+    p {
+      font-size: 16px;
+      display: inline-block;
+      margin-left: 10px;
+      &:after {
+        content: ' ';
+        width: 40px;
+        height: 40px;
+        background-color: black;
+      }
+    }
+    img {
+      width: 40px;
+      // height: 30px;
+      display: inline-block;
+    }
+  }
+}
