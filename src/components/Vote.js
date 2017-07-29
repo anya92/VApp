@@ -5,12 +5,16 @@ class Vote extends Component {
     super(props);
     
     this.state = {
+      newAnswer: null,
       selected: ''
     }
   }
 
-  addNewAnswer = () => {
-    document.querySelector('.add-answer').classList.add('hide');
+  newAnswer = e => {
+    this.setState({
+      newAnswer: e.target.value,
+      selected: e.target.value
+    })
   }
 
   render() {
@@ -28,9 +32,18 @@ class Vote extends Component {
               )
             })
           }
-          <div className="add-answer" onClick={() => this.addNewAnswer()}>
-            <span>+</span><p>Dodaj nową odpowiedź.</p>
-          </div>
+          {
+            this.props.user
+            ? (
+                <div className="radio new-answer">
+                  <input type="radio" id="newAnswer"  checked={this.state.selected === this.state.newAnswer} required />
+                  <label htmlFor="newAnswer"><span></span></label>
+                  <input type="text" placeholder="Dodaj nową odpowiedź" value={this.state.newAnswer === this.state.selected ? this.state.selected : ''} onChange={e => this.newAnswer(e)} />
+                </div>
+              )
+            : <div></div>
+          } 
+          
           <button className="btn btn-lg" type="submit">Zagłosuj</button>
         </form>
 

@@ -63,10 +63,9 @@ class SinglePoll extends Component {
 
   vote = (e, answer) => {
     e.preventDefault();
-    let count = this.state.singlePoll.answers[answer] + 1;   
+    let count = this.state.singlePoll.answers[answer] + 1 || 1;   
     const { answers, pollKey, numberOfVotes } = this.state.singlePoll;
     let newNumbersOfVotes = numberOfVotes + 1;
-
     // update poll in firebase
     pollRef.child(pollKey).update({
       answers: {
@@ -115,7 +114,7 @@ class SinglePoll extends Component {
         {
           this.state.alreadyVoted 
           ? <PollChart poll={this.state.singlePoll} />
-          : <Vote poll={this.state.singlePoll} vote={this.vote} />
+          : <Vote poll={this.state.singlePoll} vote={this.vote} user={this.props.user }/>
         }
         {
           this.state.isAuthor

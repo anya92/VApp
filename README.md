@@ -4,7 +4,7 @@ _This project was bootstrapped with [Create React App](https://github.com/facebo
 
 1. As an authenticated user, I can keep my polls and come back later to access them.
 
-2. As an authenticated user, I can share my polls with my friends. // TODO
+2. As an authenticated user, I can share my polls with my friends. 
 
 3. As an authenticated user, I can see the aggregate results of my polls.
 

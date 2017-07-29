@@ -25,7 +25,7 @@
       display: none;
       & + label {
         font-size: 20px;
-        color: darken(#eee, 50%);
+        color: darken(#eee, 80%);
         &:hover {
           color: $main-color;
           span {
@@ -43,7 +43,7 @@
         margin: -2px 6px 0 0;
         cursor: pointer;
         border-radius: 50%;
-        border: 2px solid darken(#eee, 50%);
+        border: 2px solid darken(#eee, 80%);
       }
       &:checked + label span {
         position: relative;
@@ -89,4 +89,18 @@
   border-bottom: 1px solid black;
   color: black;
   cursor: pointer;
+}
+
+
+.new-answer {
+  // margin-left: 20px;
+  label span {
+    display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin: -2px 6px 0 0;
+        cursor: pointer;
+        border-radius: 50%;
+        border: 2px solid darken(#eee, 80%);
+  }
 }
