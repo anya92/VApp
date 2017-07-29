@@ -48,14 +48,14 @@ img.social {
     to {
       left: 0px;
       top: 0px;
-      transform: scale(0);
+      transform: scale(0.5);
     }
   }
 }
 
 $duration: 0.4s;
 $timing-show: cubic-bezier(0.5, -0.75, 0.7, 2);
-$timing-hide: linear;
+$timing-hide: cubic-bezier(0.5, -0.75, 0.7, 2);
 $fill-mode: forwards;
 
 @mixin animate($name, $delay, $timing-function) {

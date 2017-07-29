@@ -9,20 +9,28 @@ class Vote extends Component {
     }
   }
 
+  addNewAnswer = () => {
+    document.querySelector('.add-answer').classList.add('hide');
+  }
+
   render() {
     const { answers } = this.props.poll;
     return ( // style vote 
       <div>
-        <form onSubmit={e => this.props.vote(e, this.state.selected)}>
+        <form className="form" onSubmit={e => this.props.vote(e, this.state.selected)}>
           {
             Object.keys(answers).map((answer, i) => {
               return (
                 <div className="radio" key={i}>
-                  <label><input type="radio" value={answer} onChange={e => this.setState({ selected: e.target.value })} checked={this.state.selected === answer} required />{answer}</label>
+                  <input type="radio" id={answer} value={answer} onChange={e => this.setState({ selected: e.target.value })} checked={this.state.selected === answer} required />
+                  <label htmlFor={answer}><span></span>{answer}</label>
                 </div>
               )
             })
           }
+          <div className="add-answer" onClick={() => this.addNewAnswer()}>
+            <span>+</span><p>Dodaj nową odpowiedź.</p>
+          </div>
           <button className="btn btn-lg" type="submit">Zagłosuj</button>
         </form>
 

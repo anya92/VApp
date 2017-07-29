@@ -20,6 +20,47 @@
     font-weight: normal;
     color: black;
   }
+  .radio {
+    input[type="radio"] {
+      display: none;
+      & + label {
+        font-size: 20px;
+        color: darken(#eee, 50%);
+        &:hover {
+          color: $main-color;
+          span {
+            border-color: $main-color;
+          }
+        }
+      }
+      &:checked + label {
+        color: $main-color;
+      }
+      & + label span {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin: -2px 6px 0 0;
+        cursor: pointer;
+        border-radius: 50%;
+        border: 2px solid darken(#eee, 50%);
+      }
+      &:checked + label span {
+        position: relative;
+        &::after {
+          content: " ";
+          width: 8px;
+          height: 8px;
+          border-radius: 50%; 
+          background-color: $main-color;
+          position: absolute;
+          top: 2px;
+          left: 2px;
+        }
+        border: 2px solid $main-color;
+      }
+    }
+  }
 }
 
 .add-answer {
