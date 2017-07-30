@@ -56,6 +56,8 @@ class PollChart extends Component {
   }
 
   changeChart = (chart) => {
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+    document.querySelector(`.${chart}`).classList.add('active');
     this.setState({
       display: chart
     });
@@ -72,17 +74,19 @@ class PollChart extends Component {
       }]
     };
     let doughnutOptions = {
+      responsive: true,
       legend: {
         display: true,
-        position: 'right',
+        // position: 'right',
         labels: {
-          boxWidth: 50,
-          fontSize: 16,
+          // boxWidth: 50,
+          // fontSize: 16,
           padding: 15
         }
       }
     }
     let barOptions = {
+      // responsive: true,
       legend: {
         display: true,
         position: 'right',
@@ -101,9 +105,9 @@ class PollChart extends Component {
     return ( // TODO style chart, choose doughnut or bar chart // icons!!!!
       <div>
         <div className="choose-chart">
-          <a onClick={() => this.changeChart('doughnut')}>Kołowy</a>
-          <a onClick={() => this.changeChart('bar')}>Kulumnowy</a>
-          <a onClick={() => this.changeChart('info')}>Informacje</a>
+          <a onClick={() => this.changeChart('doughnut')} className="tab doughnut active">Kołowy</a>
+          <a onClick={() => this.changeChart('bar')} className="tab bar">Kulumnowy</a>
+          <a onClick={() => this.changeChart('info')} className="tab info">Informacje</a>
         </div>
         {
           this.state.display === 'doughnut'

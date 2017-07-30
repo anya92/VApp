@@ -1,0 +1,25 @@
+.choose-chart {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  a {
+    // border: 2px solid $main-color;
+    color: black;
+    padding: 5px;
+    cursor: pointer;
+    &.active {
+      background-color: #eee;
+    }
+  }
+}
+
+.chart {
+  // position: relative;
+  margin-top: 20px;
+  // width: 100%;
+  canvas {
+    // width: 100%;
+    // min-height: 400px;
+  }
+  // height: 400px;
+}

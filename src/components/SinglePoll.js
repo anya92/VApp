@@ -113,20 +113,31 @@ class SinglePoll extends Component {
     const { singlePoll, isAuthor } = this.state;
     return !singlePoll ? <div id="loading"></div> :  (
       <div>
-        <div className="single-poll block">
-          <div className="single-poll__author">
-            { singlePoll.author.photoURL && <img src={singlePoll.author.photoURL} alt="author"/> }
-            <p>{singlePoll.author.displayName || singlePoll.author.email}</p>
-            <p>{moment(singlePoll.created_At).fromNow()}</p>
-          </div> <hr/>
-          <div className="single-poll__title">
-            <p>{singlePoll.title}</p>
-          </div> <hr/>
-        {
-          this.state.alreadyVoted 
-          ? <PollChart poll={singlePoll} />
-          : <Vote poll={singlePoll} vote={this.vote} user={this.props.user }/>
-        }
+        <div className="col-sm-6">
+          <div className="block">
+          <div className="single-poll">
+            <div className="single-poll__title">
+              <p>{singlePoll.title}</p>
+            </div>
+            <div className="single-poll__photo">
+              {singlePoll.photoURL && <img src={singlePoll.photoURL} alt="poll" /> }
+            </div>
+            <div className="single-poll__author">
+              { singlePoll.author.photoURL && <img src={singlePoll.author.photoURL} alt="author"/> }
+              <p>{singlePoll.author.displayName || singlePoll.author.email}</p>
+              <p>{moment(singlePoll.created_At).fromNow()}</p>
+              <p>{singlePoll.numberOfVotes} oddanych głosów</p>
+            </div>
+          </div> 
+          <div className="col-sm-6">  
+            {
+              this.state.alreadyVoted 
+              ? <PollChart poll={singlePoll} />
+              : <Vote poll={singlePoll} vote={this.vote} user={this.props.user }/>
+            }
+            </div>
+          </div>
+        </div>
         {
           isAuthor
           ? <div className="share-buttons">
@@ -146,8 +157,6 @@ class SinglePoll extends Component {
            </div>
           : <div></div> 
         }
-        </div>
-        
       </div>
     );
   }

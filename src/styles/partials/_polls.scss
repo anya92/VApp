@@ -1,5 +1,5 @@
 .poll-card {
- 
+  
   height: 380px;
   margin: 20px 10px;
   position: relative;
@@ -118,32 +118,49 @@ a:hover {
 }
 
 .single-poll {
-  padding: 20px;
+  // border: 2px solid #eee;
+  background-color: white;
+  // padding: 20px;
   hr {
     border: none;
     border-top: medium double #eee;
   }
   &__title {
     font-size: 25px;
-    font-weight: bold;
-    text-align: center;
+    color: $green;
+    height: 50px;
+    // font-weight: bold;
+    // text-align: center;
+  }
+  &__photo {
+    position: relative;
+    height: 250px;
+    margin-top: 20px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
   &__author {
     // background-color: #eee;
     padding: 5px;
     margin-bottom: 10px;
     @media all and (min-width: 768px) {
-      width: 50%;
+      // width: 50%;
     }
     p {
       font-size: 16px;
       display: inline-block;
       margin-left: 10px;
-      &:after {
-        content: ' ';
-        width: 40px;
-        height: 40px;
-        background-color: black;
+      &:not(:last-child):after {
+        content: '•';
+        font-size: 20px;
+        margin-left: 10px;
+        color: #bbb;
+        // width: 40px;
+        // height: 40px;
+        // background-color: black;
       }
     }
     img {
